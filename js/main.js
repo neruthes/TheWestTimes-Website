@@ -53,10 +53,10 @@ app.load = function () {
             };
         } else {
             // Without index
-            location.replace('https://www.thewesttimes.com/');
+            location.replace('https://thewesttimes.com/');
         }
     } else {
-        location.replace('https://www.thewesttimes.com/');
+        location.replace('https://thewesttimes.com/');
     };
 };
 
