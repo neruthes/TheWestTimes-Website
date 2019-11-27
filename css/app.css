@@ -90,6 +90,10 @@ header p {
 
 /* List & Detail */
 
+.cp--scene img {
+    border-radius: 3px;
+}
+
 .doc-entry-status-tag {
     font-size: 14px;
     color: #FFF;
