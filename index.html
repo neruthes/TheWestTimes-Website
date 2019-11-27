@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <!-- (c) 2019 Neruthes <https://neruthes.xyz> -->
+    <!-- Software is licensed under GNU AGPL v3 -->
+    <!-- Every article has its own copyright declaration -->
+    <head>
+        <meta charset="utf-8">
+        <title>The West Times</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/base.css">
+        <link rel="stylesheet" href="/css/app.css">
+        <!-- <link rel="alternate" type="application/rss+xml" title="The West Times RSS" href="http://thewesttimes.com/rss.rss"> -->
+        <script type="text/javascript" src="/js/main.js"></script>
+    </head>
+    <body data-scene="null">
+        <header>
+            <div class="cp--section-inner cp--header-inner">
+                <h1>
+                    <a href="/">
+                        <span style="font-size: 1px; line-height: 1px; position: fixed; top: -100px; left: -500px;">The West Times</span>
+                        <img src="/img/TWT-logotype.png" alt="" style="max-width: 200px;">
+                    </a>
+                </h1>
+            </div>
+        </header>
+        <div class="cp--nav-container" style="padding: 10px 0;">
+            <nav class="cp--section-inner cp--nav">
+                <div class="cp--nav-inner">
+                    <a href="/">Home</a>
+                    <a href="/?about">About</a>
+                    <!-- <a href="/rss.rss">RSS</a> -->
+                </div>
+            </nav>
+        </div>
+        <div class="cp--main" style="padding: 30px 0;">
+            <div class="cp--section-inner cp--scene" id="cp--scene-home">
+                <div class="">
+                    <nav class="h2">Latest Articles</nav>
+                </div>
+                <div id="cp--scene-home--list">
+                    Loading list...
+                </div>
+                <div class="cp--scene-home--list--show-full-list" style="display: none;">
+                    <a data-eventlisten-click data-command="show-full-list">
+                        <style media="screen">
+                        [data-command="show-full-list"] {
+                            font-size: 16px;
+                            line-height: 30px;
+                            color: #999;
+                            text-align: center;
+                            cursor: pointer;
+                            display: block;
+                            padding: 10px 0;
+                        }
+                        [data-command="show-full-list"]:hover {
+                            color: #333;
+                        }
+                        </style>
+                        Show Full List (<span id="js-List-RemaingItemsCount"></span> more)
+                    </a>
+                </div>
+            </div>
+            <div class="cp--section-inner cp--scene" id="cp--scene-about">
+                <style media="screen">
+                #cp--scene-about code {
+                    color: #F55;
+                    background: #F0F0F0;
+                    border-radius: 3px;
+                    padding: 1px 4px;
+                }
+                </style>
+                <div class="">
+                    <div class="">
+                        <nav class="h2">About</nav>
+                    </div>
+                    <section class="" style="padding: 0 16px 0;">
+                        <p>It is like Onion News?</p>
+                    </section>
+                </div>
+            </div>
+            <div class="cp--section-inner cp--scene" id="cp--scene-detail">
+                <div class="" id="cp--scene-detail--inner">
+                </div>
+                <div class="" id="cp--scene-detail--comments">
+                </div>
+            </div>
+        </div>
+        <footer class="cp--footer">
+            <div class="cp--section-inner" style="color: #999; padding: 0 32px;">
+                <style media="screen">
+                .cp--footer p {
+                    padding: 0 !important;
+                }
+                </style>
+                <p>Website &copy; 2019<script type="text/javascript">document.write(
+                    (new Date()).getFullYear() === 2019 ? '' : ('-' + (new Date()).getFullYear())
+                )</script> TheWestTimes.com</p>
+                <p>Articles &copy; 2019<script type="text/javascript">document.write(
+                    (new Date()).getFullYear() === 2019 ? '' : ('-' + (new Date()).getFullYear())
+                )</script> Their respective authors</p>
+                <p>Maintained by Neruthes etc</p>
+                <p>Website <a href="//github.com/neruthes/TheWestTimes-Website">source code</a> licensed under <a href="//www.gnu.org/licenses/agpl-3.0.html">AGPLv3</a></p>
+            </div>
+        </footer>
+    </body>
+</html>

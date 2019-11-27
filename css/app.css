@@ -1,0 +1,238 @@
+/*
+    (c) 2019 Neruthes <https://neruthes.xyz>
+    Licensed under GNU AGPL v3
+*/
+
+/*  ----------------------------------------------------
+    Global
+----------------------------------------------------- */
+
+html, body {
+    font-size: 16px;
+}
+
+/*  ----------------------------------------------------
+    Layout
+----------------------------------------------------- */
+
+
+.cp--section-inner {
+    max-width: 800px;
+    padding: 0 16px;
+    margin: 0 auto;
+}
+
+/*  ----------------------------------------------------
+    Header
+----------------------------------------------------- */
+
+header {
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.cp--header-inner {
+
+}
+
+header h1 {
+    padding: 0 10px 10px;
+}
+
+header h1 a {
+    color: #000;
+    text-decoration: none;
+}
+
+header p {
+    padding: 0 0 10px;
+}
+
+/*  ----------------------------------------------------
+    Nav
+----------------------------------------------------- */
+
+.cp--nav-container {
+    background: #F5F5F5;
+}
+
+.cp--nav-inner {
+    padding: 0 16px;
+}
+
+.cp--nav-container a {
+    font-size: 16px;
+    font-weight: bold;
+    /* color: #0571EF; */
+    color: #000;
+    text-decoration: none;
+    margin-right: 16px;
+}
+.cp--nav-container a:hover {
+    opacity: 0.5;
+}
+
+/*  ----------------------------------------------------
+    Scenes
+----------------------------------------------------- */
+
+/* General */
+
+.cp--scene .h2 {
+    padding: 0 16px 20px;
+}
+.cp--scene .h2,
+.cp--scene .h2 * {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+}
+
+/* List & Detail */
+
+.doc-entry-status-tag {
+    font-size: 14px;
+    color: #FFF;
+    line-height: 20px;
+    border-radius: 3px;
+    display: inline-block;
+    height: 20px;
+    padding: 0 6px;
+    margin: 0 6px 0 0;
+}
+.doc-entry-status--DONE { background: #222; }
+.doc-entry-status--OPEN { background: #0571EF; }
+.doc-entry-status--STOP { background: #C22; }
+
+.doc-entry-author-link {
+    color: #666;
+}
+.doc-entry-author-link:hover {
+    color: #000;
+}
+
+/* List */
+
+.filter-option {
+    cursor: pointer;
+}
+
+.home--doc-entry {
+    padding: 16px;
+}
+.home--doc-entry {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    /* border-bottom: none; */
+}
+.home--doc-entry:last-child {
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
+}
+
+.home--doc-entry:hover {
+    background: #FAFAFA;
+}
+
+.home--doc-entry .home--doc-entry-title a {
+    text-decoration: none;
+    padding: 0 0 10px;
+}
+.home--doc-entry .home--doc-entry-title a:link:hover .home--doc-entry-title--text {
+    opacity: 0.75;
+}
+.home--doc-entry .home--doc-entry-title a:visited .home--doc-entry-title--text {
+    /* color: #777; */
+}
+
+.home--doc-entry-status {
+    font-size: 14px;
+    line-height: 20px
+}
+
+.home--doc-entry-status-date {
+    color: #666;
+    font-size: 14px;
+    line-height: 20px;
+    height: 20px;
+}
+
+.home--doc-entry-status-authors {
+    color: #666;
+}
+
+/* Detail */
+
+.detail--doc-entry {
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
+}
+
+.detail--doc-entry .detail--doc-entry-title {
+    padding: 0 0 10px;
+}
+
+.detail--doc-entry-status {
+    font-size: 18px;
+    line-height: 30px;
+    padding: 10px 0 10px;
+}
+
+.detail--doc-entry-status-tag {
+    font-size: 18px;
+    line-height: 30px;
+    height: 30px;
+}
+
+.detail--doc-entry-status-date {
+    color: #666;
+    font-size: 18px;
+    line-height: 30px;
+    height: 30px;
+}
+
+.detail--doc-entry h3 {
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.detail--doc-entry p {
+    font-size: 20px;
+}
+
+/* About */
+
+.cp--scene section {
+    padding: 5px 0;
+}
+
+.cp--scene h3,
+.cp--scene h4,
+.cp--scene h5 {
+    padding: 0.5em 0;
+}
+
+p {
+    line-height: 1.4em;
+    padding: 0 0 0.7em;
+}
+
+/*  ----------------------------------------------------
+    Footer
+----------------------------------------------------- */
+
+footer {
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+
+/*  ----------------------------------------------------
+    Routing
+----------------------------------------------------- */
+
+.cp--scene {
+    display: none;
+}
+
+body[data-scene="home"] #cp--scene-home { display: block !important; }
+body[data-scene="about"] #cp--scene-about { display: block !important; }
+body[data-scene="detail"] #cp--scene-detail { display: block !important; }

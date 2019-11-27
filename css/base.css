@@ -1,0 +1,29 @@
+/*
+    (c) 2019 Neruthes <https://neruthes.xyz>
+    Licensed under GNU AGPL v3
+*/
+
+* {
+    box-sizing: border-box;
+    text-rendering: optimizeLegibility;
+    padding: 0;
+    margin: 0;
+}
+
+html, body {
+    font-family: -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.ff-sansserif {
+    font-family: -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif;
+}
+
+.ff-serif {
+    font-family: -apple-system-serif, 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
+}
+
+.ff-monosapce, pre, code {
+    font-family: 'Source Code Pro', 'Menlo', 'PT Mono', monospace;
+}
