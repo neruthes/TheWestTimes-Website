@@ -13,6 +13,8 @@ var app = {
 
 app.setTitleComponent = function (input) {
     document.title = `${input} — The West Times`;
+    document.querySelector('#og-title').setAttribute('content', document.title);
+    document.querySelector('#og-description').setAttribute('content', document.title);
 };
 
 app.setScene = function (scene) {
@@ -39,6 +41,9 @@ app.load = function () {
                 // Valid index
                 if (app.scene.detail.determineExistence(match[1])) {
                     // Good index
+                    if (app.db[match[1]].articleUrl !== '/' + location.search) {
+                        location.href = app.db[match[1]].articleUrl
+                    }
                     app.setTitleComponent(app.db[match[1]].localeTitle.en);
                     document.querySelector('#cp--scene-detail--inner').innerHTML = app.scene.detail.render(match[1], 'normal');
                 } else {
@@ -165,6 +170,13 @@ app.scene.home = {
                         })}
                     </p>
                 </div>
+                ${
+                    (function (entry) {
+                        if (entry.index === app.db.length - 1) {
+                            document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
+                        };
+                    })(entry)
+                }
             </div>
         `;
     },
@@ -260,8 +272,7 @@ app.scene.detail = {
                     <div class="detail--doc-entry--content-container ff-serif" id="js--detail--doc-entry--content-container-${entry.index}" style="padding: 10px 0;">
                         ${app.xhrget('/db/' + entry.index + '.html', function (e) {
                             document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.toString();
-                            document.querySelector('#og-image-').setAttribute('content', '')
-
+                            document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
                         })}
                     </div>
                 </div>
