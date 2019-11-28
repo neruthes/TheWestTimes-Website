@@ -27,3 +27,9 @@ html, body {
 .ff-monosapce, pre, code {
     font-family: 'Source Code Pro', 'Menlo', 'PT Mono', monospace;
 }
+
+@media print {
+    .hide-print {
+        display: none;
+    }
+}

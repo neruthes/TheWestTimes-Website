@@ -247,7 +247,7 @@ app.scene.detail = {
                 </div>
             `,
             normal: `
-                <div>
+                <div class="hide-print">
                     <nav class="h2"><a href="/">Home</a> / Article ${entry.index}</nav>
                 </div>
                 <div class="detail--doc-entry" style="
