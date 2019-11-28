@@ -175,6 +175,7 @@ app.scene.home = {
                         if (entry.index === app.db.length - 1) {
                             document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
                         };
+                        return '';
                     })(entry)
                 }
             </div>
