@@ -260,6 +260,8 @@ app.scene.detail = {
                     <div class="detail--doc-entry--content-container ff-serif" id="js--detail--doc-entry--content-container-${entry.index}" style="padding: 10px 0;">
                         ${app.xhrget('/db/' + entry.index + '.html', function (e) {
                             document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.toString();
+                            document.querySelector('#og-image-').setAttribute('content', '')
+
                         })}
                     </div>
                 </div>
