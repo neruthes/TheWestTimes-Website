@@ -15,25 +15,52 @@
         <meta property="og:title" id="og-title" content="The West Times" />
         <meta property="og:type" id="og-type" content="website" />
         <meta property="og:image" id="og-image" content="" />
-        <meta property="og:description" id="og-description" content="" />
+        <meta property="og:description" id="og-description" content="The West Times, official website." />
     </head>
     <body data-scene="null">
         <header>
             <div class="cp--section-inner cp--header-inner">
+                <div class="cp--header-switchlang ff-sansserif" style="float: right;">
+                    <style media="screen">
+                    .cp--header-switchlang {
+                        font-size: 14px;
+                        line-height: 20px;
+                        color: #999;
+                    }
+                    .cp--header-switchlang a {
+                        color: #999;
+                        text-decoration: none;
+                    }
+                    .cp--header-switchlang a:hover {
+                        color: #000;
+                        text-decoration: none;
+                    }
+                    @media screen and (min-width: 5px) {
+                        .cp--header-switchlang nav a {
+                            display: block;
+                            text-align: right;
+                        }
+                    }
+                    </style>
+                    <nav id="app-subscene-canvas--switchLang">
+                        <a data-set-lang="en">English</a>
+                        <a data-set-lang="zh">简体中文</a>
+                    </nav>
+                </div>
                 <h1>
                     <a href="/">
                         <span style="font-size: 1px; line-height: 1px; position: fixed; top: -100px; left: -500px;">The West Times</span>
-                        <img src="/img/TWT-combH-v3.png" alt="" style="width: 80%; max-width: 360px;">
+                        <img src="/img/TWT-combH-v3.png" alt="" style="width: 55%; max-width: 360px;">
                     </a>
                 </h1>
             </div>
         </header>
         <div class="cp--nav-container hide-print" style="padding: 10px 0;">
             <nav class="cp--section-inner cp--nav">
-                <div class="cp--nav-inner">
+                <div class="cp--nav-inner" id="app-subscene-canvas--grandNavbar">
                     <a href="/">Home</a>
                     <a href="/?about">About</a>
-                    <!-- <a href="/rss.rss">RSS</a> -->
+                    <a href="https://github.com/neruthes/TheWestTimes-Forum">Forum</a>
                 </div>
             </nav>
         </div>
@@ -74,9 +101,9 @@
                     padding: 1px 4px;
                 }
                 </style>
-                <div class="">
+                <div class="" id="app-subScene-canvas--aboutThisSite">
                     <div class="">
-                        <nav class="h2">About</nav>
+                        <nav class="h2">About The West Times</nav>
                     </div>
                     <section class="" style="padding: 0 16px 0;">
                         <p>It is like Onion News?</p>

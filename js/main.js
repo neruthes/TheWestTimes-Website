@@ -3,14 +3,16 @@
 
 var app = {
     flag: {
-        didFinishPageLoad: false
+        didFinishPageLoadAlreadyInvoked: false
     },
     vars: {
-        renderLang: 'en'
+        renderLang: 'en',
+        entryId: null,
     },
     envVar: {
         defaultListLength: 10,
-        magicUuid_01: '56eb206d-f44c-4f62-a589-74fa5d801ad6'
+        localStorageNamespace: 'thewesttimes.com:',
+        magicUuid_01: '56eb206d-f44c-4f62-a589-74fa5d801ad6',
     }
 };
 
@@ -25,17 +27,24 @@ app.setScene = function (scene) {
 };
 
 app.load = function () {
-    if (location.search === '') {
-        // scene: home
+    if (location.search === '' || location.search.match(/^\?lang=(en|zh)$/)) {
+        // Scene: home
+        if (location.search === '') {
+            location.href = '/?lang='+app.vars.renderLang;
+        };
         app.setTitleComponent('Home');
         app.setScene('home');
         app.scene.home.load();
-    } else if (location.search === '?about') {
-        // scene: about
+    } else if (location.search === '?about' || location.search.match(/^\?about&lang=(en|zh)$/)) {
+        // Scene: about
+        if (location.search === 'about') {
+            location.href = '/?about&lang='+app.vars.renderLang;
+        };
         app.setTitleComponent('About');
         app.setScene('about');
+        app.scene.aboutThisSite.load();
     } else if (location.search.indexOf('?article-') === 0) {
-        // scene: detail
+        // Scene: detail
         if (location.search.match(/^\?article-([0-9]+)/)) {
             // With index
             var match = location.search.match(/^\?article-([0-9]+)/);
@@ -45,15 +54,17 @@ app.load = function () {
                 if (app.scene.detail.determineExistence(match[1])) {
                     // Good index
                     if (app.db[match[1]].articleUrl !== '/' + location.search) {
-                        location.href = app.db[match[1]].articleUrl
-                    }
+                        location.href = app.db[match[1]].articleUrl;
+                    };
+                    app.vars.entryId = match[1];
                     app.setTitleComponent(app.db[match[1]].title.en);
                     document.querySelector('#cp--scene-detail--inner').innerHTML = app.scene.detail.render(match[1], 'normal');
+                    app.didFinishPageLoad();
                 } else {
                     // Does not exist
                     app.setTitleComponent('404 Not Found');
                     document.querySelector('#cp--scene-detail--inner').innerHTML = app.scene.detail.render(match[1], 'error404');
-                }
+                };
             } else {
                 // Invalid index
                 app.setTitleComponent('404 Not Found');
@@ -61,10 +72,10 @@ app.load = function () {
             };
         } else {
             // Without index
-            location.replace('https://thewesttimes.com/');
+            location.href = '/?lang='+app.vars.renderLang;
         }
     } else {
-        location.replace('https://thewesttimes.com/');
+        location.href = '/?lang='+app.vars.renderLang;
     };
 };
 
@@ -80,7 +91,7 @@ app.databaseBackbone = {
     parseData: function (rawData) {
         app.db = JSON.parse(rawData).map(function (entry, index) {
             var tmpObj = entry;
-            tmpObj.articleUrl = `/?article-${entry.index}--` + entry.title.en.replace(/\s/g, '-').replace(/[^\d\w-]/g, '').toLowerCase();
+            tmpObj.articleUrl = `/?article-${entry.index}--` + entry.title.en.replace(/\s/g, '-').replace(/[^\d\w-]/g, '').toLowerCase() + `&lang=${app.vars.renderLang}`;
             return tmpObj;
         });
         app.load(); // Start page routing
@@ -142,7 +153,7 @@ app.scene.home = {
                         <div class="home--doc-entry-cover">
                             <img src="/cover/${entry.index}.png" style="display: block; width: 100%;">
                         </div>
-                        <span class="home--doc-entry-title--text" style="display:block; padding-top: 10px;">${entry.title.en}</span>
+                        <span class="home--doc-entry-title--text" style="display:block; padding-top: 10px;">${entry.title[app.vars.renderLang]}</span>
                     </a>
                 </div>
                 <div class="home--doc-entry-status">
@@ -181,7 +192,7 @@ app.scene.home = {
                         font-weight: 600;
                         color: #000;
                         display: block;
-                    ">${entry.title.en}</a>
+                    ">${entry.title[app.vars.renderLang]}</a>
                 </div>
                 <div class="home--doc-entry-status">
                     <span class="home--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;</span>
@@ -254,7 +265,7 @@ app.scene.detail = {
                             text-decoration: none !important;
                             display: block;
                             padding: 15px 0 0;
-                        ">${entry.title.en}</h2>
+                        ">${entry.title[app.vars.renderLang]}</h2>
                     </div>
                     <div class="detail--doc-entry-status">
                         ${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;&nbsp;
@@ -273,6 +284,52 @@ app.scene.detail = {
     }
 };
 
+app.scene.aboutThisSite = {
+    load: function () {
+        document.querySelector('#app-subScene-canvas--aboutThisSite').innerHTML = app.scene.aboutThisSite.render();
+        app.didFinishPageLoad();
+    },
+    render: function () {
+        return ({
+            en: `<div class="">
+                <nav class="h2">About The West Times</nav>
+            </div>
+            <section class="" style="padding: 0 16px 0;">
+                <p>It is like Onion News?</p>
+            </section>`,
+            zh: `<div class="">
+                <nav class="h2">关于西方时报</nav>
+            </div>
+            <section class="" style="padding: 0 16px 0;">
+                <p>It is like Onion News?</p>
+            </section>`
+        })[app.vars.renderLang];
+    }
+};
+
+app.subScene = {};
+
+app.subScene.switchLang = {
+    render: function (linkTemplate) {
+        console.log('app.subScene.switchLang.render: Invoked!');
+        document.querySelector('#app-subscene-canvas--switchLang').innerHTML = `
+            <a href="${linkTemplate.replace('{lang}', 'en')}">English</a>
+            <a href="${linkTemplate.replace('{lang}', 'zh')}">简体中文</a>
+        `;
+    }
+};
+
+app.subScene.grandNavbar = {
+    render: function () {
+        var ll = app.vars.renderLang;
+        document.querySelector('#app-subscene-canvas--grandNavbar').innerHTML = `
+            <a href="/?lang=${ll}">${({en:'Home',zh:'首页'})[ll]}</a>
+            <a href="/?about&lang=${ll}">${({en:'About',zh:'关于'})[ll]}</a>
+            <a href="https://github.com/neruthes/TheWestTimes-Forum">${({en:'Forum',zh:'讨论区'})[ll]}</a>
+        `;
+    }
+};
+
 app.eventHandlers = {
     click: function (e) {
 
@@ -280,25 +337,69 @@ app.eventHandlers = {
 };
 
 app.didFinishPageLoad = function () {
-    if (app.flag.didFinishPageLoad) {
+    if (app.flag.didFinishPageLoadAlreadyInvoked) {
         // Do nothing
     } else {
+        // Listen click events
         document.querySelectorAll('[data-eventlisten-click]').forEach(function(node){node.addEventListener('click', app.eventHandlers.click)});
-        app.flag.didFinishPageLoad = true;
+        // Render SubScene: switchLang
+        (function () {
+            var scene = document.body.getAttribute('data-scene');
+            if (scene === 'detail') {
+                app.subScene.switchLang.render(app.db[app.vars.entryId].articleUrl+'&lang={lang}');
+            } else if (scene === 'about') {
+                app.subScene.switchLang.render('/?about&lang={lang}');
+            } else {
+                // Default: home
+                app.subScene.switchLang.render('/?lang={lang}');
+            }
+        })();
+        // Render SubScene: grandNavbar
+        (function () {
+            app.subScene.grandNavbar.render()
+        })();
+        // Always use sans-serif for CJK
+        (function () {
+            if (app.vars.renderLang === 'zh') {
+                document.querySelectorAll('.ff-serif').forEach(function (node) {
+                    console.log('serif!');
+                    node.setAttribute('class', node.getAttribute('class').replace(/ff-serif/g, ''));
+                });
+            };
+        })();
+        app.flag.didFinishPageLoadAlreadyInvoked = true;
     };
 };
 
 app.boot = function () {
+    // Event Listeners
+
+    // Load data
     app.databaseBackbone.load();
 };
 
 app.start = function () {
     // Determine language
     (function () {
-        if (location.hash.match(/^#(en|zh)$/)) {
-            app.vars.renderLang = location.hash.match(/^#(en|zh)$/)[0];
+        var tmpLang = 'en';
+        window.urlLangMatch = location.search.match(/[?&]lang=(en|zh)$/);
+        console.log(urlLangMatch);
+        // alert(urlLangMatch[1]);
+        if (localStorage[app.envVar.localStorageNamespace+'cached-lang']) {
+            // Get cache
+            tmpLang = localStorage[app.envVar.localStorageNamespace+'cached-lang']
         }
+        if (urlLangMatch !== null && urlLangMatch.length >= 2) {
+            // Manually determine
+            localStorage[app.envVar.localStorageNamespace+'cached-lang'] = urlLangMatch[1];
+            tmpLang = urlLangMatch[1];
+        };
+        // Finally
+        app.vars.renderLang = tmpLang;
+        // Save to cache
+        localStorage[app.envVar.localStorageNamespace+'cached-lang'] = app.vars.renderLang;
     })();
+
     // Boot
     app.boot();
 };
