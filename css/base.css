@@ -20,6 +20,10 @@ html, body {
     font-family: -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif;
 }
 
+.ff-sansserif-alt {
+    font-family: 'Source Sans Pro', -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif;
+}
+
 .ff-serif {
     font-family: -apple-system-serif, 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
 }

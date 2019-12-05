@@ -5,6 +5,9 @@ var app = {
     flag: {
         didFinishPageLoad: false
     },
+    vars: {
+        renderLang: 'en'
+    },
     envVar: {
         defaultListLength: 10,
         magicUuid_01: '56eb206d-f44c-4f62-a589-74fa5d801ad6'
@@ -44,7 +47,7 @@ app.load = function () {
                     if (app.db[match[1]].articleUrl !== '/' + location.search) {
                         location.href = app.db[match[1]].articleUrl
                     }
-                    app.setTitleComponent(app.db[match[1]].localeTitle.en);
+                    app.setTitleComponent(app.db[match[1]].title.en);
                     document.querySelector('#cp--scene-detail--inner').innerHTML = app.scene.detail.render(match[1], 'normal');
                 } else {
                     // Does not exist
@@ -75,24 +78,11 @@ app.xhrget = function (url, callback) {
 
 app.databaseBackbone = {
     parseData: function (rawData) {
-        var newData = rawData.trim().split('\n').map(function (lineStr) {
-            var lineData = lineStr.split('||');
-            var entry = {
-                articleUrl: `/?article-${lineData[0]}--` + lineData[3].replace(/\s/g, '-').replace(/[^\d\w-]/g, '').toLowerCase(),
-                index: parseInt(lineData[0]),
-                dateSubmit: parseInt(lineData[1]),
-                authors: lineData[2].split(',,'),
-                title: lineData[3],
-                localeTitle: {
-                    en: lineData[3],
-                    zh: lineData[4]
-                }
-            };
-            console.log(entry.articleUrl);
-            return entry;
+        app.db = JSON.parse(rawData).map(function (entry, index) {
+            var tmpObj = entry;
+            tmpObj.articleUrl = `/?article-${entry.index}--` + entry.title.en.replace(/\s/g, '-').replace(/[^\d\w-]/g, '').toLowerCase();
+            return tmpObj;
         });
-        app.db = newData;
-        // console.log(app.db);
         app.load(); // Start page routing
     },
     pickData: function (inputData, matchField, matchValue) {
@@ -107,7 +97,7 @@ app.databaseBackbone = {
             app.databaseBackbone.parseData(e.target.responseText);
         });
     }
-}
+};
 
 app.scene = {};
 
@@ -152,7 +142,7 @@ app.scene.home = {
                         <div class="home--doc-entry-cover">
                             <img src="/cover/${entry.index}.png" style="display: block; width: 100%;">
                         </div>
-                        <span class="home--doc-entry-title--text" style="display:block; padding-top: 10px;">${entry.title}</span>
+                        <span class="home--doc-entry-title--text" style="display:block; padding-top: 10px;">${entry.title.en}</span>
                     </a>
                 </div>
                 <div class="home--doc-entry-status">
@@ -164,8 +154,8 @@ app.scene.home = {
                     }</span>
                 </div>
                 <div class="home--doc-entry--content-container" style="padding: 10px 0 5px;">
-                    <p class="home--doc-entry--content-paragraph ff-serif" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; padding: 0;">
-                        ${app.xhrget('/db/' + entry.index + '.html', function (e) {
+                    <p class="home--doc-entry--content-paragraph ff-sansserif-alt" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; padding: 0;">
+                        ${app.xhrget(`/db-${app.vars.renderLang}/` + entry.index + '.html', function (e) {
                             console.log( document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>')) )
                         })}
                     </p>
@@ -191,7 +181,7 @@ app.scene.home = {
                         font-weight: 600;
                         color: #000;
                         display: block;
-                    ">${entry.title}</a>
+                    ">${entry.title.en}</a>
                 </div>
                 <div class="home--doc-entry-status">
                     <span class="home--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;</span>
@@ -261,17 +251,17 @@ app.scene.detail = {
                         <h2 class="ff-serif" href="${entry.articleUrl}" target="_blank" rel="nofollow" style="
                             font-size: 34px;
                             color: #000;
-                            text-decoratoin: none !important;
+                            text-decoration: none !important;
                             display: block;
                             padding: 15px 0 0;
-                        ">${entry.title}</h2>
+                        ">${entry.title.en}</h2>
                     </div>
                     <div class="detail--doc-entry-status">
                         ${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;&nbsp;
                         ${entry.authors.map(app.scene.home.renderAuthor).join(', ')}
                     </div>
                     <div class="detail--doc-entry--content-container ff-serif" id="js--detail--doc-entry--content-container-${entry.index}" style="padding: 10px 0;">
-                        ${app.xhrget('/db/' + entry.index + '.html', function (e) {
+                        ${app.xhrget(`/db-${app.vars.renderLang}/` + entry.index + '.html', function (e) {
                             document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.toString();
                             document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
                         })}
@@ -281,13 +271,13 @@ app.scene.detail = {
         };
         return templates[httpStatus];
     }
-}
+};
 
 app.eventHandlers = {
     click: function (e) {
 
     }
-}
+};
 
 app.didFinishPageLoad = function () {
     if (app.flag.didFinishPageLoad) {
@@ -303,7 +293,14 @@ app.boot = function () {
 };
 
 app.start = function () {
+    // Determine language
+    (function () {
+        if (location.hash.match(/^#(en|zh)$/)) {
+            app.vars.renderLang = location.hash.match(/^#(en|zh)$/)[0];
+        }
+    })();
+    // Boot
     app.boot();
-}
+};
 
 window.addEventListener('load', app.start);

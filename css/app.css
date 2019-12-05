@@ -195,9 +195,10 @@ header p {
 }
 
 .detail--doc-entry h3 {
-    font-family: 'Iowan Old Style', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
+    font-family: 'DIN Alternate', 'Source Sans Pro', sans-serif, 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Lantinghei SC', 'Microsoft YaHei';
+    font-family: 'Source Sans Pro', -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif;
     font-size: 30px;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 .detail--doc-entry p {
