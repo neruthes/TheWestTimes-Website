@@ -57,7 +57,7 @@ app.load = function () {
                         location.href = app.db[match[1]].articleUrl;
                     };
                     app.vars.entryId = match[1];
-                    app.setTitleComponent(app.db[match[1]].title.en);
+                    app.setTitleComponent(app.db[match[1]].title[app.vars.renderLang]);
                     document.querySelector('#cp--scene-detail--inner').innerHTML = app.scene.detail.render(match[1], 'normal');
                     app.didFinishPageLoad();
                 } else {
@@ -104,7 +104,7 @@ app.databaseBackbone = {
         };
     },
     load: function () {
-        app.xhrget('/db.txt', function (e) {
+        app.xhrget('/db.json', function (e) {
             app.databaseBackbone.parseData(e.target.responseText);
         });
     }
@@ -121,9 +121,9 @@ app.scene.home = {
             app.envVar.defaultListLength,
             function () {
                 document.querySelector('#js-List-RemaingItemsCount').innerHTML = app.db.length-app.envVar.defaultListLength;
-                app.didFinishPageLoad();
             }
         );
+        app.didFinishPageLoad();
     },
     renderAuthor: function (author) {
         if (author.match(/^([^|]+?)\|(\w+)\:(.+?)$/)) {
@@ -259,7 +259,7 @@ app.scene.detail = {
                         <img src="/cover/${entry.index}.png" style="display: block; width: 100%;">
                     </div>
                     <div class="detail--doc-entry-title">
-                        <h2 class="ff-serif" href="${entry.articleUrl}" target="_blank" rel="nofollow" style="
+                        <h2 class="ff-serif" style="
                             font-size: 34px;
                             color: #000;
                             text-decoration: none !important;
@@ -301,7 +301,7 @@ app.scene.aboutThisSite = {
                 <nav class="h2">关于西方时报</nav>
             </div>
             <section class="" style="padding: 0 16px 0;">
-                <p>It is like Onion News?</p>
+                <p>不是洋葱新闻。</p>
             </section>`
         })[app.vars.renderLang];
     }
@@ -311,7 +311,6 @@ app.subScene = {};
 
 app.subScene.switchLang = {
     render: function (linkTemplate) {
-        console.log('app.subScene.switchLang.render: Invoked!');
         document.querySelector('#app-subscene-canvas--switchLang').innerHTML = `
             <a href="${linkTemplate.replace('{lang}', 'en')}">English</a>
             <a href="${linkTemplate.replace('{lang}', 'zh')}">简体中文</a>
@@ -340,6 +339,7 @@ app.didFinishPageLoad = function () {
     if (app.flag.didFinishPageLoadAlreadyInvoked) {
         // Do nothing
     } else {
+        console.log('app.didFinishPageLoad: Started');
         // Listen click events
         document.querySelectorAll('[data-eventlisten-click]').forEach(function(node){node.addEventListener('click', app.eventHandlers.click)});
         // Render SubScene: switchLang
@@ -363,6 +363,7 @@ app.didFinishPageLoad = function () {
             if (app.vars.renderLang === 'zh') {
                 document.querySelectorAll('.ff-serif').forEach(function (node) {
                     console.log('serif!');
+                    console.log(node);
                     node.setAttribute('class', node.getAttribute('class').replace(/ff-serif/g, ''));
                 });
             };
