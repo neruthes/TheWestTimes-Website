@@ -117,10 +117,10 @@ header p {
 .doc-entry-status--STOP { background: #C22; }
 
 .doc-entry-author-link {
-    color: #666;
+    color: #000;
 }
 .doc-entry-author-link:hover {
-    color: #000;
+    color: #666;
 }
 
 /* List */
