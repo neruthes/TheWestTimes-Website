@@ -210,7 +210,8 @@ header p {
 }
 
 .detail--doc-entry p {
-    font-family: inherit;
+    /* font-family: inherit; */
+    font-family: 'Charter', 'Iowan Old Style', 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC';
     font-size: 20px;
 }
 
