@@ -166,7 +166,7 @@ app.scene.home = {
                 </div>
                 <div class="home--doc-entry--content-container" style="padding: 10px 0 5px;">
                     <p class="home--doc-entry--content-paragraph ff-sansserif-alt" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; padding: 0;">
-                        ${app.xhrget(`/db-${app.vars.renderLang}/` + entry.index + '.html', function (e) {
+                        ${app.xhrget(`/db-en${/*app.vars.renderLang*/}/` + entry.index + '.html', function (e) {
                             console.log( document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>')) )
                         })}
                     </p>
