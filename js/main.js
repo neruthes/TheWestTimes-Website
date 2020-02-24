@@ -89,11 +89,13 @@ app.xhrget = function (url, callback) {
 
 app.databaseBackbone = {
     parseData: function (rawData) {
-        app.db = JSON.parse(rawData).map(function (entry, index) {
+        var json = JSON.parse(rawData);
+        app.db = json.articles.map(function (entry, index) {
             var tmpObj = entry;
-            tmpObj.articleUrl = `/?article-${entry.index}--` + entry.title.en.replace(/\s/g, '-').replace(/[^\d\w-]/g, '').toLowerCase() + `&lang=${app.vars.renderLang}`;
+            tmpObj.articleUrl = `/?article-${entry.index}--` + entry.title.en.replace(/[^\w\d]/g, '-').replace(/\-+/g, '-').replace(/[^\d\w-]/g, '').toLowerCase() + `&lang=${app.vars.renderLang}`;
             return tmpObj;
         });
+        app.authors = json.authors.map(x => x);
         app.load(); // Start page routing
     },
     pickData: function (inputData, matchField, matchValue) {
@@ -125,19 +127,27 @@ app.scene.home = {
         );
         app.didFinishPageLoad();
     },
-    renderAuthor: function (author) {
-        if (author.match(/^([^|]+?)\|(\w+)\:(.+?)$/)) {
-            var regexMatchResult = author.match(/^([^|]+?)\|(\w+)\:(.+?)$/)
-            var templates = {
-                pgp: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="https://pgp.to/#0x${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
-                url: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="//${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
-                email: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="mailto:${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
-                github: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="https://github.com/${regexMatchResult[3]}">${regexMatchResult[1]}</a>`
-            };
-            return templates[regexMatchResult[2]];
+    renderAuthor: function (authorId) {
+        if (authorId === 'etc') {
+            return `<span>etc</span>`
+        }
+        if (app.authors[authorId].url) {
+            return `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="//${app.authors[authorId].url}">${app.authors[authorId].name}</a>`
         } else {
-            return `<span>${author}</span>`;
+            return `<span>${app.authors[authorId].name}</span>`
         };
+        // if (author.match(/^([^|]+?)\|(\w+)\:(.+?)$/)) {
+        //     var regexMatchResult = author.match(/^([^|]+?)\|(\w+)\:(.+?)$/)
+        //     var templates = {
+        //         pgp: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="https://pgp.to/#0x${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
+        //         url: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="//${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
+        //         email: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="mailto:${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
+        //         github: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="https://github.com/${regexMatchResult[3]}">${regexMatchResult[1]}</a>`
+        //     };
+        //     return templates[regexMatchResult[2]];
+        // } else {
+        //     return `<span>${author}</span>`;
+        // };
     },
     renderListItemBig: function (entry) {
         return `
@@ -161,7 +171,7 @@ app.scene.home = {
                     <span class="home--doc-entry-status-authors">${
                         (entry.authors.length < 3) ?
                             ( entry.authors.slice(0,2).map(app.scene.home.renderAuthor).join(', ') ) :
-                            ( entry.authors.slice(0,1).concat('etc').map(app.scene.home.renderAuthor).join(', ') )
+                                ( entry.authors.slice(0,1).concat('etc').map(app.scene.home.renderAuthor).join(', ') )
                     }</span>
                 </div>
                 <div class="home--doc-entry--content-container" style="padding: 10px 0 5px;">
@@ -188,7 +198,7 @@ app.scene.home = {
             ">
                 <div class="home--doc-entry-title">
                     <a class="ff-serif" href="${entry.articleUrl}" style="
-                        font-size: 20px;
+                        font-size: 24px;
                         font-weight: 600;
                         color: #000;
                         display: block;
@@ -212,7 +222,7 @@ app.scene.home = {
             <div>
                 ${
                     JSON.parse(JSON.stringify(subList)).reverse().slice(0, lengthLimit).map(function (entry, i) {
-                        if (i < 5) {
+                        if (i < 1) {
                             return app.scene.home.renderListItemBig(entry);
                         } else {
                             return app.scene.home.renderListItemSmall(entry);
@@ -268,7 +278,7 @@ app.scene.detail = {
                         ">${entry.title[app.vars.renderLang]}</h2>
                     </div>
                     <div class="detail--doc-entry-status">
-                        ${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;&nbsp;
+                        <span class="detail--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;&nbsp;</span>
                         ${entry.authors.map(app.scene.home.renderAuthor).join(', ')}
                     </div>
                     <div class="detail--doc-entry--content-container ff-serif" id="js--detail--doc-entry--content-container-${entry.index}" style="padding: 10px 0;">
