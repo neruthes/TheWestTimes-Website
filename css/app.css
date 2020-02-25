@@ -148,13 +148,16 @@ header p {
 .home--doc-entry:hover {
     background: #FAFAFA;
 }
+.home--doc-entry:hover .home--doc-entry-title * {
+    color: #117 !important;
+}
 
 .home--doc-entry .home--doc-entry-title a {
     text-decoration: none;
     padding: 0 0 10px;
 }
 .home--doc-entry .home--doc-entry-title a:link:hover .home--doc-entry-title--text {
-    opacity: 0.75;
+
 }
 .home--doc-entry .home--doc-entry-title a:visited .home--doc-entry-title--text {
     /* color: #777; */
