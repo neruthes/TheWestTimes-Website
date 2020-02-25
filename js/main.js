@@ -127,28 +127,6 @@ app.scene.home = {
         );
         app.didFinishPageLoad();
     },
-    renderAuthor: function (authorId) {
-        if (authorId === 'etc') {
-            return `<span>etc</span>`
-        }
-        if (app.authors[authorId].url) {
-            return `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="//${app.authors[authorId].url}">${app.authors[authorId].name}</a>`
-        } else {
-            return `<span>${app.authors[authorId].name}</span>`
-        };
-        // if (author.match(/^([^|]+?)\|(\w+)\:(.+?)$/)) {
-        //     var regexMatchResult = author.match(/^([^|]+?)\|(\w+)\:(.+?)$/)
-        //     var templates = {
-        //         pgp: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="https://pgp.to/#0x${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
-        //         url: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="//${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
-        //         email: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="mailto:${regexMatchResult[3]}">${regexMatchResult[1]}</a>`,
-        //         github: `<a class="doc-entry-author-link" target="_blank" rel="nofollow" href="https://github.com/${regexMatchResult[3]}">${regexMatchResult[1]}</a>`
-        //     };
-        //     return templates[regexMatchResult[2]];
-        // } else {
-        //     return `<span>${author}</span>`;
-        // };
-    },
     renderListItemBig: function (entry) {
         return `
             <div class="home--doc-entry home--doc-entry-big" style="
@@ -170,12 +148,12 @@ app.scene.home = {
                     <span class="home--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;</span>
                     <span class="home--doc-entry-status-authors">${
                         (entry.authors.length < 3) ?
-                            ( entry.authors.slice(0,2).map(app.scene.home.renderAuthor).join(', ') ) :
-                                ( entry.authors.slice(0,1).concat('etc').map(app.scene.home.renderAuthor).join(', ') )
+                            ( entry.authors.slice(0,2).map(app.subScene.authorLabel.render).join(', ') ) :
+                                ( entry.authors.slice(0,1).concat('etc').map(app.subScene.authorLabel.render).join(', ') )
                     }</span>
                 </div>
                 <div class="home--doc-entry--content-container" style="padding: 10px 0 5px;">
-                    <p class="home--doc-entry--content-paragraph ff-sansserif-alt" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; padding: 0;">
+                    <p class="home--doc-entry--content-paragraph ff-serif" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; padding: 0;">
                         ${app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
                             console.log( document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>')) )
                         })}
@@ -208,8 +186,8 @@ app.scene.home = {
                     <span class="home--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;</span>
                     <span class="home--doc-entry-status-authors">${
                         (entry.authors.length < 3) ?
-                            ( entry.authors.slice(0,2).map(app.scene.home.renderAuthor).join(', ') ) :
-                            ( entry.authors.slice(0,1).concat('etc').map(app.scene.home.renderAuthor).join(', ') )
+                            ( entry.authors.slice(0,2).map(app.subScene.authorLabel.render).join(', ') ) :
+                            ( entry.authors.slice(0,1).concat('etc').map(app.subScene.authorLabel.render).join(', ') )
                     }</span>
                 </div>
             </div>
@@ -279,10 +257,10 @@ app.scene.detail = {
                     </div>
                     <div class="detail--doc-entry-status">
                         <span class="detail--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;&nbsp;</span>
-                        ${entry.authors.map(app.scene.home.renderAuthor).join(', ')}
+                        ${entry.authors.map(app.subScene.authorLabel.render).join(', ')}
                     </div>
                     <div class="detail--doc-entry--content-container ff-serif" id="js--detail--doc-entry--content-container-${entry.index}" style="padding: 10px 0;">
-                        ${app.xhrget(`/db-${app.vars.renderLang}/` + entry.index + '.html', function (e) {
+                        ${app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
                             document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.toString();
                             document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
                         })}
@@ -339,6 +317,38 @@ app.subScene.grandNavbar = {
     }
 };
 
+app.subScene.authorLabel = {
+    render: function (authorId) {
+        if (authorId === 'etc') {
+            return `<span>etc</span>`
+        }
+        if (app.authors[authorId].url) {
+            return `<span data-author-id="${authorId}" class="authorInfoCard-container"><a class="doc-entry-author-link" style="position: relative;" target="_blank" rel="nofollow" data-author-id="${authorId}" href="//${app.authors[authorId].url}">${app.authors[authorId].name}</a>${app.subScene.authorInfoCard.render(authorId)}</span>`
+        } else {
+            return `<span>${app.authors[authorId].name}</span>`
+        };
+    }
+};
+
+app.subScene.authorInfoCard = {
+    render: function (authorId) {
+        return `<aside class="authorInfoCard">
+            <div class="authorInfoCard-inner">
+                <div style="font-size: 13px; font-weight: 500; color: #666; text-transform: uppercase; margin: 0 0 3px;">
+                    About the author
+                </div>
+                <div style="font-size: 17px; font-weight: 500; color: #000; line-height: 20px; margin: 0 0 7px;">
+                    <span>${app.authors[authorId].name}</span>
+                    <span style="opacity: 0.5;">#${authorId}</span>
+                </div>
+                <div style="font-size: 15px; color: #111; line-height: 19px;">
+                    ${app.authors[authorId].bio}
+                </div>
+            </div>
+        </aside>`;
+    }
+};
+
 app.eventHandlers = {
     click: function (e) {
 
@@ -362,7 +372,7 @@ app.didFinishPageLoad = function () {
             } else {
                 // Default: home
                 app.subScene.switchLang.render('/?lang={lang}');
-            }
+            };
         })();
         // Render SubScene: grandNavbar
         (function () {

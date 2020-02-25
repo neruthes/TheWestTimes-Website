@@ -35,8 +35,8 @@ html, body {
 ----------------------------------------------------- */
 
 header {
-    padding-top: 30px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 1px;
 }
 
 .cp--header-inner {
@@ -44,6 +44,7 @@ header {
 }
 
 header h1 {
+    text-align: center;
     padding: 0 10px 10px;
 }
 
@@ -61,7 +62,8 @@ header p {
 ----------------------------------------------------- */
 
 .cp--nav-container {
-    background: #F5F5F5;
+    background: #FFF;
+    border-bottom: 1px solid #000;
 }
 
 .cp--nav-inner {
@@ -69,8 +71,9 @@ header p {
 }
 
 .cp--nav-container a {
-    font-size: 16px;
-    font-weight: bold;
+    /* font-family: 'DIN Alternate', 'Tahoma', sans-serif; */
+    font-size: 14px;
+    font-weight: 400;
     /* color: #0571EF; */
     color: #000;
     text-decoration: none;
@@ -133,8 +136,8 @@ header p {
     padding: 16px;
 }
 .home--doc-entry {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 1);
+    border-radius: 0px;
     margin-bottom: 16px;
     /* border-bottom: none; */
 }
@@ -171,6 +174,17 @@ header p {
 
 .home--doc-entry-status-authors {
     color: #666;
+}
+@media screen and (min-width: 768px) {
+    .home--doc-entry-cover {
+        float: right;width: 40%;
+        padding: 0 0 0 15px;
+    }
+    .home--doc-entry-title--text {
+        font-size: 44px;
+        display:block;
+        padding-top: 0px;
+    }
 }
 
 /* Detail */
@@ -212,6 +226,7 @@ header p {
 .detail--doc-entry p {
     /* font-family: inherit; */
     font-family: 'Charter', 'Iowan Old Style', 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC';
+    font-family: 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC';
     font-size: 20px;
 }
 
@@ -231,6 +246,39 @@ p {
     line-height: 1.4em;
     padding: 0 0 0.7em;
 }
+
+/*  ----------------------------------------------------
+    Author Info Card
+----------------------------------------------------- */
+.authorInfoCard {
+    display: none;
+}
+@media screen and (min-width: 768px) {
+    .authorInfoCard-container {
+        position: relative;
+    }
+    .authorInfoCard-container:hover .authorInfoCard {
+        display: block;
+    }
+    .authorInfoCard {
+        display: none;
+        position: absolute;
+        top: -40px;
+        left: calc(100% - 3px);
+        width: 70vw;
+        min-width: 260px;
+        max-width: 420px;
+        height: auto;
+        padding: 0 0 0 20px;;
+    }
+    .authorInfoCard-inner {
+        background: #FFF;
+        box-shadow: rgba(0, 0, 0, 0.14) 0 15px 30px 5px, rgba(0, 0, 0, 0.02) 0 1px 5px 1px;
+        border-radius: 4px;
+        padding: 10px 20px 20px;
+    }
+}
+
 
 /*  ----------------------------------------------------
     Footer
