@@ -327,7 +327,7 @@ app.scene.detail = {
     },
     renderContributorsLink: function (articleIndex) {
         return `<div>
-            <aside style="font-size: 16px; color: #999;padding: 40px 0 70px;">
+            <aside style="font-size: 16px; color: #999;padding: 40px 0;">
                 The list of contributors of this article is
                 <a href="https://github.com/neruthes/TheWestTimes-Website/commits/master/db-${app.vars.renderLang}/${articleIndex}.html" style="color: inherit;">available on GitHub</a>.
             </aside>
@@ -379,7 +379,7 @@ app.scene.detail = {
                             ${app.scene.detail.renderContributorsLink(articleIndex)}
                         </div>
                         <div class="ff-sansserif">
-                            <h2 style="text-align: center; padding: 40px 0 20px;">${({en:'About the Author'+(entry.authors.length === 1 ? '' : 's'),zh:'关于作者'})[app.vars.renderLang]}</h2>
+                            <nav class="h2" style="text-align: center; padding: 40px 0 20px;">${({en:'About the Author'+(entry.authors.length === 1 ? '' : 's'),zh:'关于作者'})[app.vars.renderLang]}</nav>
                             ${entry.authors.map(function (authorId) {
                                 return app.scene.authorProfile.renderProfile(authorId) + '<div style="height: 16px;"></div>'
                             }).join('')}
@@ -388,7 +388,7 @@ app.scene.detail = {
                             ${app.subScene.prevAndNext.render(articleIndex)}
                         </div>
                         <div>
-                            <h2 style="text-align: center; padding: 40px 0 20px;">${({en:'Related Articles',zh:'相关文章'})[app.vars.renderLang]}</h2>
+                            <nav class="h2" style="text-align: center; padding: 40px 0 20px;">${({en:'Related Articles',zh:'相关文章'})[app.vars.renderLang]}</nav>
                         </div>
                     </div>
                 </div>
@@ -505,7 +505,7 @@ app.scene.authorProfile = {
     },
     renderArticles: function (authorId) {
         var articles = app.authors[authorId].articles;
-        var html = `<h2 style="padding: 40px 0 20px;">${({en:'Articles',zh:'文章列表'})[app.vars.renderLang]}</h2>`;
+        var html = `<nav class="h2" style="padding: 40px 16px 20px;">${({en:'Recent Articles',zh:'文章列表'})[app.vars.renderLang]}</nav>`;
         if (articles.length > 0) {
             html += app.scene.home.renderListItemBig(articles[0]);
         };
