@@ -57,7 +57,7 @@ app.load = function () {
         app.scene.home.load();
     } else if (location.search === '?about' || location.search.match(/^\?about&lang=(en|zh)$/)) {
         // Scene: about
-        if (location.search === 'about') {
+        if (location.search === '?about') {
             location.href = '/?about&lang='+app.vars.renderLang;
         };
         app.setTitleComponent('About');
@@ -65,6 +65,9 @@ app.load = function () {
         app.scene.aboutThisSite.load();
     } else if (location.search.indexOf('?authors') === 0) {
         // Scene authors
+        if (location.search === '?authors') {
+            location.href = '/?authors&lang='+app.vars.renderLang;
+        };
         app.setTitleComponent('Authors');
         app.setScene('authors');
         app.scene.authors.load();
@@ -76,9 +79,13 @@ app.load = function () {
             return 404;
         };
         var authorId_str = location.search.match(/\?author-(\d+)/)[1];
-        if (!app.authors[authorId_str] || parseInt(authorId_str).toString() !== authorId_str) {
+        var authorId = parseInt(authorId_str);
+        if (!app.authors[authorId_str] || authorId.toString() !== authorId_str) {
             app.grand404();
             return 404;
+        };
+        if (!location.search.match(/&lang=(en|zh)/)) {
+            location.href = `/?author-${authorId_str}&lang=`+app.vars.renderLang;
         };
         app.scene.authorProfile.load(parseInt(authorId_str));
     } else if (location.search.indexOf('?article-') === 0) {
@@ -163,11 +170,12 @@ app.scene.home = {
                 document.querySelector('#js-List-RemaingItemsCount').innerHTML = app.db.length-app.envVar.defaultListLength;
             }
         );
+        document.querySelector('#cp--scene-home--nav').innerHTML;
         app.didFinishPageLoad();
     },
     renderListItemBig: function (entry) {
         return `
-            <div class="home--doc-entry home--doc-entry-big" style="
+            <div class="home--doc-entry home--doc-entry-big" data-entry-big-entry-index="${entry.index}" style="
             ">
                 <div class="home--doc-entry-title" style="padding-top: 0;">
                     <a class="ff-serif" href="${entry.articleUrl}" style="
@@ -182,6 +190,19 @@ app.scene.home = {
                         <span class="home--doc-entry-title--text" style="display:block; padding-top: 10px;">${entry.title[app.vars.renderLang]}</span>
                     </a>
                 </div>
+                ${
+                    (function () {
+                        setTimeout(function () {
+                            document.querySelector('[data-entry-big-entry-index="' + entry.index + '"] .home--doc-entry-title').style.minHeight = document.querySelector('[data-entry-big-entry-index="' + entry.index + '"] .home--doc-entry-cover').offsetHeight + 'px';
+                        }, 1);
+                        return '';
+                    })()
+                }
+                <style>
+                [data-entry-big-entry-index="${entry.index}"] .home--doc-entry-title {
+
+                }
+                </style>
                 <div class="home--doc-entry-status">
                     <span class="home--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;</span>
                     <span class="home--doc-entry-status-authors">${
@@ -279,7 +300,7 @@ app.scene.detail = {
             `,
             normal: `
                 <div class="hide-print">
-                    <nav class="h2"><a href="/">Home</a> / Article #${entry.index}</nav>
+                    <nav class="h2"><a href="/?lang=${app.vars.renderLang}">${({en:'Home',zh:'首页'})[app.vars.renderLang]}</a> / ${({en:'Article',zh:'文章'})[app.vars.renderLang]} #${entry.index}</nav>
                 </div>
                 <div class="detail--doc-entry" style="
                     padding: 0 16px 14px;
@@ -322,26 +343,28 @@ app.scene.aboutThisSite = {
         app.didFinishPageLoad();
     },
     render: function () {
-        return ({
-            en: `<div class="">
-                <nav class="h2">About The West Times</nav>
-            </div>
-            <section class="" style="padding: 0 16px 0;">
-                <p>It is like Onion News?</p>
-            </section>`,
-            zh: `<div class="">
-                <nav class="h2">关于西方时报</nav>
-            </div>
-            <section class="" style="padding: 0 16px 0;">
-                <p>不是洋葱新闻。</p>
-            </section>`
-        })[app.vars.renderLang];
+        return `<div class="">
+            <nav class="h2"><a href="?lang=${app.vars.renderLang}">${({en:'Home',zh:'首页'})[app.vars.renderLang]}</a> / ${ ({
+                en: 'About The West Times',
+                zh: '关于西方时报'
+            })[app.vars.renderLang] }</nav>
+        </div>
+        <section class="" style="padding: 0 16px 0;" id="uuid-46ce3de680484610bcf92cc65a0bb32b">
+            ${ (function () {
+                app.xhrget(`/html-component/AboutThisSiteSectionContent.${app.vars.renderLang}.html`, function (e) {
+                    document.querySelector('#uuid-46ce3de680484610bcf92cc65a0bb32b').innerHTML = e.target.responseText;
+                    console.log(e);
+                });
+                return '<p style="color: #999;">Loading...</p>'
+            })() }
+        </section>`;
     }
 };
 
 app.scene.authors = {
     load: function () {
         document.querySelector('#cp--scene-authors').innerHTML = app.scene.authors.render();
+        app.didFinishPageLoad();
     },
     render: function () {
         var listOfAuthorIdByMostRecentPublishing = [];
@@ -365,7 +388,7 @@ app.scene.authors = {
         }).join('');
         return `<div>
             <div>
-                <nav class="h2"><a href="/">Home</a> / Authors</nav>
+                <nav class="h2"><a href="/?lang=${app.vars.renderLang}">${({en:'Home',zh:'首页'})[app.vars.renderLang]}</a> / ${({en:'Authors',zh:'作者'})[app.vars.renderLang]}</nav>
             </div>
             <div>
                 ${html}
@@ -376,13 +399,13 @@ app.scene.authors = {
         return `<div style="border: 1px solid #000;">
             <div style="padding: 16px 15px;">
                 <div class="cp--scene-authorProfile-avatar">
-                    <a href="/?author-${authorObj.i}" style="display: block;">
+                    <a href="/?author-${authorObj.i}&lang=${app.vars.renderLang}" style="display: block;">
                         <img src="/img/author-avatars/${authorObj.i}.png">
                     </a>
                 </div>
                 <div class="cp--scene-authorProfile-info">
                     <div>
-                        <h2 style="font-size: 30px;"><a href="/?author-${authorObj.i}" style="text-decoration: none;">${authorObj.name}</a> <span style="font-weight: 300; color: #999;">&nbsp;&nbsp;#${authorObj.i}</span></h2>
+                        <h2 style="font-size: 30px;"><a href="/?author-${authorObj.i}&lang=${app.vars.renderLang}" style="text-decoration: none;">${authorObj.name}</a> <span style="font-weight: 300; color: #999;">&nbsp;&nbsp;#${authorObj.i}</span></h2>
                     </div>
                     <div style="padding: 10px 0 8px">
                         <p>${authorObj.bio.split('\n').join('</p><p>')}</p>
@@ -403,6 +426,7 @@ app.scene.authors = {
 
 app.scene.authorProfile = {
     load: function (authorId) {
+        app.vars.authorId = authorId;
         console.log(app.authors[authorId]);
         document.querySelector('#cp--scene-authorProfile--profile').innerHTML = app.scene.authorProfile.renderProfile(authorId);
         document.querySelector('#cp--scene-authorProfile--articles').innerHTML = app.scene.authorProfile.renderArticles(authorId);
@@ -412,7 +436,7 @@ app.scene.authorProfile = {
         var authorObj = app.authors[authorId];
         return `<div>
             <div>
-                <nav class="h2"><a href="/">Home</a> / <a href="/?authors">Authors</a> / Author #${authorObj.i}</nav>
+                <nav class="h2"><a href="/?lang=${app.vars.renderLang}">${({en:'Home',zh:'首页'})[app.vars.renderLang]}</a> / <a href="/?authors&lang=${app.vars.renderLang}">${({en:'Authors',zh:'作者'})[app.vars.renderLang]}</a> / ${({en:'Author',zh:'作者'})[app.vars.renderLang]} #${authorObj.i}</nav>
             </div>
             <div style="border: 1px solid #000; padding: 16px 15px;">
                 <div style="padding: 0 0 0;">
@@ -475,7 +499,7 @@ app.subScene.switchLang = {
 };
 
 app.subScene.grandNavbar = {
-    render: function () {
+    load: function () {
         var ll = app.vars.renderLang;
         document.querySelector('#app-subscene-canvas--grandNavbar').innerHTML = `
             <a href="/?lang=${ll}">${({en:'Home',zh:'首页'})[ll]}</a>
@@ -492,7 +516,7 @@ app.subScene.authorLabel = {
             return `<span>etc</span>`
         }
         if (app.authors[authorId].url) {
-            return `<span data-author-id="${authorId}" class="authorInfoCard-container"><a class="doc-entry-author-link" style="position: relative;" rel="nofollow" data-author-id="${authorId}" href="/?author-${authorId}">${app.authors[authorId].name}</a>${app.subScene.authorInfoCard.render(app.authors[authorId])}</span>`
+            return `<span data-author-id="${authorId}" class="authorInfoCard-container"><a class="doc-entry-author-link" style="position: relative;" rel="nofollow" data-author-id="${authorId}" href="/?author-${authorId}&lang=${app.vars.renderLang}">${app.authors[authorId].name}</a>${app.subScene.authorInfoCard.render(app.authors[authorId])}</span>`
         } else {
             return `<span>${app.authors[authorId].name}</span>`
         };
@@ -534,6 +558,8 @@ app.didFinishPageLoad = function () {
     if (app.flag.didFinishPageLoadAlreadyInvoked) { // Do nothing
         return 1
     };
+    app.flag.didFinishPageLoadAlreadyInvoked = true;
+    // ?????
     console.log('app.didFinishPageLoad: Started');
     // Listen click events
     document.querySelectorAll('[data-eventlisten-click]').forEach(function(node){node.addEventListener('click', app.eventHandlers.click)});
@@ -541,29 +567,31 @@ app.didFinishPageLoad = function () {
     (function () {
         var scene = document.body.getAttribute('data-scene');
         if (scene === 'detail') {
-            app.subScene.switchLang.render(app.db[app.vars.entryId].articleUrl+'&lang={lang}');
+            app.subScene.switchLang.render('' + app.db[app.vars.entryId].articleUrl.replace(/=\w{2}$/, '={lang}'));
         } else if (scene === 'about') {
             app.subScene.switchLang.render('/?about&lang={lang}');
+        } else if (scene === 'authors') {
+            app.subScene.switchLang.render('/?authors&lang={lang}');
+        } else if (scene === 'authorProfile') {
+            app.subScene.switchLang.render(`/?author-${app.vars.authorId}&lang={lang}`);
         } else {
             // Default: home
             app.subScene.switchLang.render('/?lang={lang}');
         };
     })();
-    // Render SubScene: grandNavbar
-    (function () {
-        app.subScene.grandNavbar.render()
+
+    (function () { // Render SubScene: grandNavbar
+        app.subScene.grandNavbar.load();
     })();
-    // Always use sans-serif for CJK
-    (function () {
-        if (app.vars.renderLang === 'zh') {
+
+    (function () { // Always use sans-serif for CJK
+        if (0 && app.vars.renderLang === 'zh') {
             document.querySelectorAll('.ff-serif').forEach(function (node) {
-                console.log('serif!');
                 console.log(node);
                 node.setAttribute('class', node.getAttribute('class').replace(/ff-serif/g, ''));
             });
         };
     })();
-    app.flag.didFinishPageLoadAlreadyInvoked = true;
 };
 
 app.boot = function () {
@@ -578,8 +606,6 @@ app.start = function () {
     (function () {
         var tmpLang = 'en';
         window.urlLangMatch = location.search.match(/[?&]lang=(en|zh)$/);
-        console.log(urlLangMatch);
-        // alert(urlLangMatch[1]);
         if (localStorage[app.envVar.localStorageNamespace+'cached-lang']) {
             // Get cache
             tmpLang = localStorage[app.envVar.localStorageNamespace+'cached-lang']

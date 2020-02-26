@@ -89,7 +89,8 @@ header p {
 /* Shell */
 
 .cp--main {
-    min-height: 90vh;
+    position: relative;
+    min-height: 50vh;
 }
 
 /* General */
@@ -343,7 +344,7 @@ p {
     font-size: 14px;
     /* font-weight: 400; */
     color: #FFF;
-    background: #000;
+    background: #30353A;
     padding-top: 50px;
     padding-bottom: 80px;
 }
