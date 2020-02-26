@@ -394,7 +394,7 @@ app.scene.detail = {
                 </div>
                 <div>
                     <!-- Fluid width -->
-                    <div style="font-size: 0px; padding: 0 16px 0;">
+                    <div style="font-size: 0px; padding: 0 32px 0;">
                         ${app.subScene.relatedArticles.render(articleIndex)}
                     </div>
                 </div>
@@ -659,7 +659,7 @@ app.subScene.authorInfoCard = {
                         ${authorObj.bio[app.vars.renderLang].replace(/\n/g, ({en:' ',zh:''})[app.vars.renderLang])}
                     </div>
                     <div style="font-size: 16px; color: #05C; line-height: 19px;">
-                        <a href="authorObj.url">${authorObj.url.replace(/^https?\:\/\//, '')}</a>
+                        <a href="${authorObj.url}">${authorObj.url.replace(/^https?\:\/\//, '')}</a>
                     </div>
                 </div>
                 <div style="clear: both;">
