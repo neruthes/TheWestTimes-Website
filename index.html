@@ -63,17 +63,20 @@
                 .cp--nav-date {
                     font-size: 14px;
                     display: block;
+                    float: right;
+                    padding: 0 16px 0 0;
                 }
             }
             </style>
             <nav class="cp--section-inner cp--nav">
-                <div class="cp--nav-date" style="float: right;">
+                <div class="cp--nav-date">
                     <script type="text/javascript">
                     document.write((new Date()).toUTCString().replace(' GMT', ''));
                     </script>
                 </div>
                 <div class="cp--nav-inner" id="app-subscene-canvas--grandNavbar">
                     <a href="/">Home</a>
+                    <a href="/?authors">Authors</a>
                     <a href="/?about">About</a>
                     <a href="https://github.com/neruthes/TheWestTimes-Forum">Forum</a>
                 </div>
@@ -131,22 +134,40 @@
                 <div class="" id="cp--scene-detail--comments">
                 </div>
             </div>
+            <div class="cp--section-inner cp--scene" id="cp--scene-authors">
+            </div>
+            <div class="cp--section-inner cp--scene" id="cp--scene-authorProfile">
+                <div class="" id="cp--scene-authorProfile--profile">
+                </div>
+                <div class="" id="cp--scene-authorProfile--articles">
+                </div>
+            </div>
         </div>
         <footer class="cp--footer">
-            <div class="cp--section-inner" style="color: #999; padding: 0 32px;">
-                <style media="screen">
-                .cp--footer p {
-                    padding: 0 !important;
-                }
-                </style>
-                <p>Website &copy; 2019<script type="text/javascript">document.write(
-                    (new Date()).getFullYear() === 2019 ? '' : ('-' + (new Date()).getFullYear())
-                )</script> TheWestTimes.com</p>
-                <p>Articles &copy; 2019<script type="text/javascript">document.write(
-                    (new Date()).getFullYear() === 2019 ? '' : ('-' + (new Date()).getFullYear())
-                )</script> Their respective authors</p>
-                <p>Maintained by Neruthes etc</p>
-                <p>Website <a href="//github.com/neruthes/TheWestTimes-Website">source code</a> licensed under <a href="//www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a></p>
+            <div class="cp--section-inner" style="padding: 0px 32px;">
+                <div class="" style="padding: 0 0 30px;">
+                    <img src="/img/TWT-logotype-v2-white.png" alt="" style="width: 50%; max-width: 280px;">
+                </div>
+                <div class="">
+                    <!-- Baseline significance -->
+                    <div class="cp--footer-links" style="padding: 0 0 30px;">
+                        <a href="/">Home</a>
+                        <a href="/?authors">Authors</a>
+                        <a href="/?about">About</a>
+                        <a href="https://github.com/neruthes/TheWestTimes-Forum">Forum</a>
+                    </div>
+                </div>
+                <div class="" style="opacity: 0.6;">
+                    <!-- Less significant -->
+                    <p>Articles copyright &copy; 2019<script type="text/javascript">document.write(
+                        (new Date()).getFullYear() === 2019 ? '' : ('-' + (new Date()).getFullYear())
+                    )</script> Their respective authors.</p>
+                    <p>Maintained by Neruthes etc.</p>
+                    <p>Website copyright &copy; 2019<script type="text/javascript">document.write(
+                        (new Date()).getFullYear() === 2019 ? '' : ('-' + (new Date()).getFullYear())
+                    )</script> TheWestTimes.com.</p>
+                    <p>Website <a href="//github.com/neruthes/TheWestTimes-Website">source code</a> is available under <a href="//www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a> license.</p>
+                </div>
             </div>
         </footer>
     </body>

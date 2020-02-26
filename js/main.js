@@ -26,6 +26,26 @@ app.setScene = function (scene) {
     document.body.setAttribute('data-scene', scene);
 };
 
+app.grand404 = function () {
+    console.log('app.grand404()');
+    app.setTitleComponent('404 Not Found');
+    document.querySelector('.cp--main').innerHTML = `<div class="cp--section-inner cp--scene" style="display: block;">
+        <h2 style="text-align: center">404 Not Found</h2>
+        <div style="text-align: center; padding: 30px 0;">
+            <a href="/" style="
+                font-size: 18px;
+                font-weight: 400;
+                color: #FFF;
+                text-decoration: none;
+                background: #07F;
+                border-radius: 6px;
+                display: inline-block;
+                padding: 10px 25px;
+            ">Homepage</a>
+        </div>
+    </div>`;
+};
+
 app.load = function () {
     if (location.search === '' || location.search.match(/^\?lang=(en|zh)$/)) {
         // Scene: home
@@ -43,6 +63,24 @@ app.load = function () {
         app.setTitleComponent('About');
         app.setScene('about');
         app.scene.aboutThisSite.load();
+    } else if (location.search.indexOf('?authors') === 0) {
+        // Scene authors
+        app.setTitleComponent('Authors');
+        app.setScene('authors');
+        app.scene.authors.load();
+    } else if (location.search.indexOf('?author-') === 0) {
+        // Scene authorProfile
+        app.setScene('authorProfile');
+        if (!location.search.match(/\?author-(\d+)/)) {
+            app.grand404();
+            return 404;
+        };
+        var authorId_str = location.search.match(/\?author-(\d+)/)[1];
+        if (!app.authors[authorId_str] || parseInt(authorId_str).toString() !== authorId_str) {
+            app.grand404();
+            return 404;
+        };
+        app.scene.authorProfile.load(parseInt(authorId_str));
     } else if (location.search.indexOf('?article-') === 0) {
         // Scene: detail
         if (location.search.match(/^\?article-([0-9]+)/)) {
@@ -154,9 +192,12 @@ app.scene.home = {
                 </div>
                 <div class="home--doc-entry--content-container" style="padding: 10px 0 5px;">
                     <p class="home--doc-entry--content-paragraph ff-serif" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; padding: 0;">
-                        ${app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
-                            console.log( document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>')) )
-                        })}
+                        ${(function () {
+                            app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
+                                document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>'))
+                            });
+                            return 'Loading...'
+                        })()}
                     </p>
                 </div>
                 ${
@@ -238,7 +279,7 @@ app.scene.detail = {
             `,
             normal: `
                 <div class="hide-print">
-                    <nav class="h2"><a href="/">Home</a> / Article ${entry.index}</nav>
+                    <nav class="h2"><a href="/">Home</a> / Article #${entry.index}</nav>
                 </div>
                 <div class="detail--doc-entry" style="
                     padding: 0 16px 14px;
@@ -260,10 +301,13 @@ app.scene.detail = {
                         ${entry.authors.map(app.subScene.authorLabel.render).join(', ')}
                     </div>
                     <div class="detail--doc-entry--content-container ff-serif" id="js--detail--doc-entry--content-container-${entry.index}" style="padding: 10px 0;">
-                        ${app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
-                            document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.toString();
-                            document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
-                        })}
+                        ${(function () {
+                            app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
+                                document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.toString();
+                                document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
+                            });
+                            return 'Loading...'
+                        })()}
                     </div>
                 </div>
             `
@@ -295,6 +339,130 @@ app.scene.aboutThisSite = {
     }
 };
 
+app.scene.authors = {
+    load: function () {
+        document.querySelector('#cp--scene-authors').innerHTML = app.scene.authors.render();
+    },
+    render: function () {
+        var listOfAuthorIdByMostRecentPublishing = [];
+        // var recordedAuthors = [];
+        var articles = JSON.parse(JSON.stringify(app.db)).reverse();
+        var mostRecentArticleByAuthor = {};
+        var totalArticlesByAuthor = {};
+        articles.map(function (entry) {
+            entry.authors.map(function (authorId) {
+                if (listOfAuthorIdByMostRecentPublishing.indexOf(authorId) === -1) { // Not recorded yet
+                    listOfAuthorIdByMostRecentPublishing.push(authorId);
+                    mostRecentArticleByAuthor[authorId] = entry.index;
+                    totalArticlesByAuthor[authorId] = 1;
+                } else { // Already recorded
+                    totalArticlesByAuthor[authorId] += 1;
+                };
+            });
+        });
+        var html = listOfAuthorIdByMostRecentPublishing.map(function (authorId) {
+            return app.scene.authors.renderAuthorIem(app.authors[authorId], totalArticlesByAuthor[authorId], mostRecentArticleByAuthor[authorId]);
+        }).join('');
+        return `<div>
+            <div>
+                <nav class="h2"><a href="/">Home</a> / Authors</nav>
+            </div>
+            <div>
+                ${html}
+            </div>
+        </div>`;
+    },
+    renderAuthorIem: function (authorObj, totalArticles, recentArticleIndex) {
+        return `<div style="border: 1px solid #000;">
+            <div style="padding: 16px 15px;">
+                <div class="cp--scene-authorProfile-avatar">
+                    <a href="/?author-${authorObj.i}" style="display: block;">
+                        <img src="/img/author-avatars/${authorObj.i}.png">
+                    </a>
+                </div>
+                <div class="cp--scene-authorProfile-info">
+                    <div>
+                        <h2 style="font-size: 30px;"><a href="/?author-${authorObj.i}" style="text-decoration: none;">${authorObj.name}</a> <span style="font-weight: 300; color: #999;">&nbsp;&nbsp;#${authorObj.i}</span></h2>
+                    </div>
+                    <div style="padding: 10px 0 8px">
+                        <p>${authorObj.bio.split('\n').join('</p><p>')}</p>
+                        <p style="padding: 8px 0 18px;">
+                            <a href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
+                        </p>
+                        <div style="background: #000; height: 1px; margin: 0 0 18px;"></div>
+                        <p>Published ${totalArticles} articles.</p>
+                        <p>Recent article: <a style="color: inherit; display: inline-block;" href="/?article-${recentArticleIndex}">${app.db[recentArticleIndex].title[app.vars.renderLang]}</a></p>
+                    </div>
+                </div>
+                <div style="clear: both;">
+                </div>
+            </div>
+        </div>`
+    }
+};
+
+app.scene.authorProfile = {
+    load: function (authorId) {
+        console.log(app.authors[authorId]);
+        document.querySelector('#cp--scene-authorProfile--profile').innerHTML = app.scene.authorProfile.renderProfile(authorId);
+        document.querySelector('#cp--scene-authorProfile--articles').innerHTML = app.scene.authorProfile.renderArticles(authorId);
+        app.didFinishPageLoad();
+    },
+    renderProfile: function (authorId) {
+        var authorObj = app.authors[authorId];
+        return `<div>
+            <div>
+                <nav class="h2"><a href="/">Home</a> / <a href="/?authors">Authors</a> / Author #${authorObj.i}</nav>
+            </div>
+            <div style="border: 1px solid #000; padding: 16px 15px;">
+                <div style="padding: 0 0 0;">
+                    <div class="cp--scene-authorProfile-avatar">
+                        <img src="/img/author-avatars/${authorObj.i}.png">
+                    </div>
+                    <div class="cp--scene-authorProfile-info">
+                        <div>
+                            <h2 style="font-size: 30px;">${authorObj.name}</h2>
+                        </div>
+                        <div style="padding: 10px 0 8px">
+                            <p>${authorObj.bio.split('\n').join('</p><p>')}</p>
+                            <p style="padding: 8px 0 18px;">
+                                <a href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
+                            </p>
+                            <div style="background: #000; height: 1px; margin: 0 0 18px;"></div>
+                            <p>Published ${app.scene.authorProfile.findArticles(authorId).length} articles.</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        </div>
+                    </div>
+                    <div style="clear: both;">
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    },
+    renderArticles: function (authorId) {
+        var articles = app.scene.authorProfile.findArticles(authorId);
+        var html = '';
+        html += app.scene.home.renderListItemBig(articles[0]);
+        html += articles.slice(1).map(function (x) { return app.scene.home.renderListItemSmall(x) }).join('');
+        html += `<div style="text-align: center;">${articles.length} articles in total.</div>`
+        return `<div style="padding: 30px 0 0;">
+            ${html}
+        </div>`;
+    },
+    findArticles: function (authorId) {
+        var articlesTmp = [];
+        app.db.map(function (entry) {
+            if (entry.authors.indexOf(authorId) > -1) {
+                console.log(entry);
+                articlesTmp.push(entry);
+            };
+        });
+        var articles = articlesTmp.reverse();
+        console.log(articles);
+        return articles;
+    }
+};
+
 app.subScene = {};
 
 app.subScene.switchLang = {
@@ -311,6 +479,7 @@ app.subScene.grandNavbar = {
         var ll = app.vars.renderLang;
         document.querySelector('#app-subscene-canvas--grandNavbar').innerHTML = `
             <a href="/?lang=${ll}">${({en:'Home',zh:'首页'})[ll]}</a>
+            <a href="/?authors&lang=${ll}">${({en:'Authors',zh:'作者'})[ll]}</a>
             <a href="/?about&lang=${ll}">${({en:'About',zh:'关于'})[ll]}</a>
             <a href="https://github.com/neruthes/TheWestTimes-Forum">${({en:'Forum',zh:'讨论区'})[ll]}</a>
         `;
@@ -323,7 +492,7 @@ app.subScene.authorLabel = {
             return `<span>etc</span>`
         }
         if (app.authors[authorId].url) {
-            return `<span data-author-id="${authorId}" class="authorInfoCard-container"><a class="doc-entry-author-link" style="position: relative;" target="_blank" rel="nofollow" data-author-id="${authorId}" href="//${app.authors[authorId].url}">${app.authors[authorId].name}</a>${app.subScene.authorInfoCard.render(authorId)}</span>`
+            return `<span data-author-id="${authorId}" class="authorInfoCard-container"><a class="doc-entry-author-link" style="position: relative;" rel="nofollow" data-author-id="${authorId}" href="/?author-${authorId}">${app.authors[authorId].name}</a>${app.subScene.authorInfoCard.render(app.authors[authorId])}</span>`
         } else {
             return `<span>${app.authors[authorId].name}</span>`
         };
@@ -331,18 +500,27 @@ app.subScene.authorLabel = {
 };
 
 app.subScene.authorInfoCard = {
-    render: function (authorId) {
+    render: function (authorObj) {
         return `<aside class="authorInfoCard">
             <div class="authorInfoCard-inner">
-                <div style="font-size: 13px; font-weight: 500; color: #666; text-transform: uppercase; margin: 0 0 3px;">
+                <!-- div style="font-size: 14px; font-weight: 500; color: #666; text-transform: uppercase; margin: 0 0 3px;">
                     About the author
+                </div -->
+                <div class="authorInfoCard-avatar" style="height: 100%; padding: 0 1px 0 0;">
+                    <img src="/img/author-avatars/${authorObj.i}.png">
                 </div>
-                <div style="font-size: 17px; font-weight: 500; color: #000; line-height: 20px; margin: 0 0 7px;">
-                    <span>${app.authors[authorId].name}</span>
-                    <span style="opacity: 0.5;">#${authorId}</span>
+                <div class="authorInfoCard-info">
+                    <div style="font-size: 20px; font-weight: 500; color: #000; line-height: 20px; margin: 0 0 7px;">
+                        <span>${authorObj.name}</span>
+                    </div>
+                    <div style="font-size: 16px; color: #111; line-height: 19px; margin: 0 0 5px;">
+                        ${authorObj.bio.replace(/\n/g, ' ')}
+                    </div>
+                    <div style="font-size: 16px; color: #05C; line-height: 19px;">
+                        <a href="authorObj.url">${authorObj.url.replace(/^https?\:\/\//, '')}</a>
+                    </div>
                 </div>
-                <div style="font-size: 15px; color: #111; line-height: 19px;">
-                    ${app.authors[authorId].bio}
+                <div style="clear: both;">
                 </div>
             </div>
         </aside>`;
@@ -356,40 +534,39 @@ app.eventHandlers = {
 };
 
 app.didFinishPageLoad = function () {
-    if (app.flag.didFinishPageLoadAlreadyInvoked) {
-        // Do nothing
-    } else {
-        console.log('app.didFinishPageLoad: Started');
-        // Listen click events
-        document.querySelectorAll('[data-eventlisten-click]').forEach(function(node){node.addEventListener('click', app.eventHandlers.click)});
-        // Render SubScene: switchLang
-        (function () {
-            var scene = document.body.getAttribute('data-scene');
-            if (scene === 'detail') {
-                app.subScene.switchLang.render(app.db[app.vars.entryId].articleUrl+'&lang={lang}');
-            } else if (scene === 'about') {
-                app.subScene.switchLang.render('/?about&lang={lang}');
-            } else {
-                // Default: home
-                app.subScene.switchLang.render('/?lang={lang}');
-            };
-        })();
-        // Render SubScene: grandNavbar
-        (function () {
-            app.subScene.grandNavbar.render()
-        })();
-        // Always use sans-serif for CJK
-        (function () {
-            if (app.vars.renderLang === 'zh') {
-                document.querySelectorAll('.ff-serif').forEach(function (node) {
-                    console.log('serif!');
-                    console.log(node);
-                    node.setAttribute('class', node.getAttribute('class').replace(/ff-serif/g, ''));
-                });
-            };
-        })();
-        app.flag.didFinishPageLoadAlreadyInvoked = true;
+    if (app.flag.didFinishPageLoadAlreadyInvoked) { // Do nothing
+        return 1
     };
+    console.log('app.didFinishPageLoad: Started');
+    // Listen click events
+    document.querySelectorAll('[data-eventlisten-click]').forEach(function(node){node.addEventListener('click', app.eventHandlers.click)});
+    // Render SubScene: switchLang
+    (function () {
+        var scene = document.body.getAttribute('data-scene');
+        if (scene === 'detail') {
+            app.subScene.switchLang.render(app.db[app.vars.entryId].articleUrl+'&lang={lang}');
+        } else if (scene === 'about') {
+            app.subScene.switchLang.render('/?about&lang={lang}');
+        } else {
+            // Default: home
+            app.subScene.switchLang.render('/?lang={lang}');
+        };
+    })();
+    // Render SubScene: grandNavbar
+    (function () {
+        app.subScene.grandNavbar.render()
+    })();
+    // Always use sans-serif for CJK
+    (function () {
+        if (app.vars.renderLang === 'zh') {
+            document.querySelectorAll('.ff-serif').forEach(function (node) {
+                console.log('serif!');
+                console.log(node);
+                node.setAttribute('class', node.getAttribute('class').replace(/ff-serif/g, ''));
+            });
+        };
+    })();
+    app.flag.didFinishPageLoadAlreadyInvoked = true;
 };
 
 app.boot = function () {
