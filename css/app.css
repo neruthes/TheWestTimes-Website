@@ -90,7 +90,7 @@ header p {
 
 .cp--main {
     position: relative;
-    min-height: 50vh;
+    min-height: 60vh;
 }
 
 /* General */
@@ -228,17 +228,17 @@ header p {
     height: 30px;
 }
 
-.detail--doc-entry h3 {
+.detail--doc-entry--content-container h3 {
     /* font-family: 'DIN Alternate', 'Source Sans Pro', sans-serif, 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Lantinghei SC', 'Microsoft YaHei'; */
     font-family: 'Source Sans Pro', -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif;
     font-size: 30px;
     font-weight: 600;
 }
 
-.detail--doc-entry p {
+.detail--doc-entry--content-container p {
     /* font-family: inherit; */
-    font-family: 'Charter', 'Iowan Old Style', 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC';
-    font-family: 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC';
+    /* font-family: 'Charter', 'Iowan Old Style', 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC'; */
+    font-family: 'Charter', 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC';
     font-size: 20px;
 }
 
@@ -269,6 +269,7 @@ p {
 .cp--scene-authorProfile-avatar img {
     display: block;
     width: 120px;
+    border-radius: 10000px;
 }
 @media screen and (min-width: 768px) {
     .cp--scene-authorProfile-avatar {
@@ -345,6 +346,7 @@ p {
     /* font-weight: 400; */
     color: #FFF;
     background: #30353A;
+    background: #40454F;
     padding-top: 50px;
     padding-bottom: 80px;
 }
@@ -365,6 +367,41 @@ p {
     line-height: 18px;
     padding: 0 !important;
     margin: 0 0 4px;
+}
+
+/*  ----------------------------------------------------
+    Misc Components
+----------------------------------------------------- */
+
+.uuid-346c9534:not(:last-child) {
+    margin-bottom: 20px;
+}
+/* Slice */
+.uuid-346c9535:hover {
+    background: #FAFAFA;
+}
+/* Slice */
+.uuid-346c9566 {
+    max-width: 736px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 14px;
+}
+@media screen and (min-width: 99768px) {
+    .uuid-346c9566 {
+        font-size: 0px;
+        float: left;
+        width: calc(50% - 7px);
+    }
+    .uuid-346c9566:nth-child(odd) {
+        margin-right: 7px;
+    }
+    .uuid-346c9566:nth-child(even) {
+        margin-left: 7px;
+    }
+    .uuid-346c9566 a {
+        color: red;
+    }
 }
 
 /*  ----------------------------------------------------

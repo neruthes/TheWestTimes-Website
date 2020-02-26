@@ -2,15 +2,27 @@
     "authors": [
         {
             "i": 0,
-            "name": "Neruthes",
+            "name": {
+                "en": "Neruthes",
+                "zh": "Neruthes"
+            },
             "url": "https://neruthes.xyz",
-            "bio": "Cyberspace patriot. Independent writer.\n Main maintainer of The West Times."
+            "bio": {
+                "en": "Cyberspace patriot. Independent writer.\n Main maintainer of The West Times.",
+                "zh": "赛博空间爱国者。独立作者。\n西方时报主编。"
+            }
         },
         {
             "i": 1,
-            "name": "HX",
+            "name": {
+                "en": "HX",
+                "zh": "HX"
+            },
             "url": "https://hx1997.github.io",
-            "bio": "Proofreader of The West Times.\n Views are my own."
+            "bio": {
+                "en": "Proofreader of The West Times.\n Views are my own.",
+                "zh": "西方时报编辑。\n观点均属个人。"
+            }
         }
     ],
     "articles": [
