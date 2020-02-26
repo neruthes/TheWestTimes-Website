@@ -387,7 +387,7 @@ app.scene.authors = {
                     <div style="padding: 10px 0 8px">
                         <p>${authorObj.bio.split('\n').join('</p><p>')}</p>
                         <p style="padding: 8px 0 18px;">
-                            <a href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
+                            <a class="authorProfile-urlanchor ff-monospace" href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
                         </p>
                         <div style="background: #000; height: 1px; margin: 0 0 18px;"></div>
                         <p>Published ${totalArticles} articles.</p>
@@ -426,7 +426,7 @@ app.scene.authorProfile = {
                         <div style="padding: 10px 0 8px">
                             <p>${authorObj.bio.split('\n').join('</p><p>')}</p>
                             <p style="padding: 8px 0 18px;">
-                                <a href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
+                                <a class="authorProfile-urlanchor ff-monospace" href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
                             </p>
                             <div style="background: #000; height: 1px; margin: 0 0 18px;"></div>
                             <p>Published ${app.scene.authorProfile.findArticles(authorId).length} articles.</p>
@@ -503,14 +503,11 @@ app.subScene.authorInfoCard = {
     render: function (authorObj) {
         return `<aside class="authorInfoCard">
             <div class="authorInfoCard-inner">
-                <!-- div style="font-size: 14px; font-weight: 500; color: #666; text-transform: uppercase; margin: 0 0 3px;">
-                    About the author
-                </div -->
                 <div class="authorInfoCard-avatar" style="height: 100%; padding: 0 1px 0 0;">
                     <img src="/img/author-avatars/${authorObj.i}.png">
                 </div>
                 <div class="authorInfoCard-info">
-                    <div style="font-size: 20px; font-weight: 500; color: #000; line-height: 20px; margin: 0 0 7px;">
+                    <div style="font-size: 24px; font-weight: 500; color: #000; line-height: 20px; margin: 0 0 7px;">
                         <span>${authorObj.name}</span>
                     </div>
                     <div style="font-size: 16px; color: #111; line-height: 19px; margin: 0 0 5px;">

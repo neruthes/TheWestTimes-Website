@@ -288,6 +288,11 @@ p {
     line-height: 20px;
     padding: 0 0 4px;
 }
+.cp--scene-authorProfile-info p a.authorProfile-urlanchor {
+    font-family: 'Source Code Pro', 'Inconsolata', 'Menlo', monospace;
+    color: #000;
+    letter-spacing: 0px;
+}
 
 /*  ----------------------------------------------------
     Author Info Card
