@@ -71,14 +71,11 @@
             <nav class="cp--section-inner cp--nav">
                 <div class="cp--nav-date">
                     <script type="text/javascript">
-                    document.write((new Date()).toUTCString().replace(' GMT', ''));
+                    document.write((new Date()).toString().replace(/GMT\+\d+/, '').replace(/[\(\)]/g, ''));
                     </script>
                 </div>
                 <div class="cp--nav-inner" id="app-subscene-canvas--grandNavbar">
-                    <a href="/">Home</a>
-                    <a href="/?authors">Authors</a>
-                    <a href="/?about">About</a>
-                    <a href="https://github.com/neruthes/TheWestTimes-Forum">Forum</a>
+                    <a style="opacity: 0;" href="/">&copy; TheWestTimes.com</a>
                 </div>
             </nav>
         </div>

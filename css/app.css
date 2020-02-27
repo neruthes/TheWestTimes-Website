@@ -183,14 +183,14 @@ header p {
 }
 
 .home--doc-entry-status-date {
-    color: #666;
+    color: #000;
     font-size: 14px;
     line-height: 20px;
     height: 20px;
 }
 
 .home--doc-entry-status-authors {
-    color: #666;
+    color: #000;
 }
 @media screen and (min-width: 768px) {
     .home--doc-entry-cover {
@@ -227,14 +227,14 @@ header p {
 }
 
 .detail--doc-entry-status-date {
-    color: #666;
+    color: #000;
     font-size: 18px;
     line-height: 30px;
     height: 30px;
 }
 
 .detail--doc-entry--content-container h3 {
-    font-family: -apple-system, 'Source Sans Pro', 'Seravek', 'Helvetica Neue', 'Helvetica', 'Open Sans', 'Ubuntu', Arial, sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Microsoft YaHei';
+    font-family: 'SF Pro Display', 'SF Pro Text', 'SF UI Display', 'SF UI Text', -apple-system, 'Source Sans Pro', 'Seravek', 'Helvetica Neue', 'Helvetica', 'Open Sans', 'Ubuntu', Arial, sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Microsoft YaHei';
     font-size: 30px;
     font-weight: 600;
 }

@@ -25,11 +25,11 @@ html, body {
 }
 
 .ff-serif {
-    font-family: -apple-system-serif, 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
+    font-family: 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
 }
 
 .ff-serif-alt {
-    font-family: 'PT Serif', 'Cinzel', 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
+    font-family: 'PT Serif', 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
 }
 
 .ff-monosapce, pre, code {

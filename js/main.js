@@ -429,13 +429,9 @@ app.scene.authors = {
         app.didFinishPageLoad();
     },
     render: function () {
-        var authorsWithZeroArticle = [];
-        app.authors.map(function (authorObj) {
-            if (app.listOfAuthorIdByMostRecentPublishing.indexOf(authorObj.i) === -1) {
-                authorsWithZeroArticle.push(authorObj.i);
-            };
-        });
-        var html = app.listOfAuthorIdByMostRecentPublishing.concat(authorsWithZeroArticle).map(function (authorId) {
+        var html = app.listOfAuthorIdByMostRecentPublishing.concat(
+            app.authors.filter(author => author.articles.length === 0).map(x => x.i)
+        ).map(function (authorId) {
             return app.scene.authors.renderAuthorIem(authorId, 'authors');
         }).join('');
         return `<div>
