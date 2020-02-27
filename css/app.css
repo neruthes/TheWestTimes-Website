@@ -145,7 +145,6 @@ header p {
     border: 1px solid rgba(0, 0, 0, 1);
     border-radius: 0px;
     margin-bottom: 16px;
-    /* border-bottom: none; */
 }
 .home--doc-entry:last-child {
     /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
@@ -154,10 +153,15 @@ header p {
 .home--doc-entry:hover {
     background: #FAFAFA;
 }
-
 .home--doc-entry .home--doc-entry-title a {
     text-decoration: none;
     padding: 0 0 10px;
+}
+.home--doc-entry .home--doc-entry-title--text {
+    font-weight: 600;
+    line-height: 1.25em;
+    display: block;
+    padding: 5px 0 0;
 }
 .home--doc-entry .home--doc-entry-title a:hover {
     color: #038 !important;
@@ -229,15 +233,12 @@ header p {
 }
 
 .detail--doc-entry--content-container h3 {
-    /* font-family: 'DIN Alternate', 'Source Sans Pro', sans-serif, 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Lantinghei SC', 'Microsoft YaHei'; */
-    font-family: 'Source Sans Pro', -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif;
+    font-family: -apple-system, 'Source Sans Pro', 'Seravek', 'Helvetica Neue', 'Helvetica', 'Open Sans', 'Ubuntu', Arial, sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Microsoft YaHei';
     font-size: 30px;
     font-weight: 600;
 }
 
 .detail--doc-entry--content-container p {
-    /* font-family: inherit; */
-    /* font-family: 'Charter', 'Iowan Old Style', 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC'; */
     font-family: 'Charter', 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC';
     font-size: 20px;
 }

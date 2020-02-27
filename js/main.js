@@ -211,7 +211,7 @@ app.scene.home = {
                 transition: opacity 150ms ease;
             ">
                 <div class="home--doc-entry-title" style="padding-top: 0;">
-                    <a class="ff-serif" href="${entry.articleUrl}" style="
+                    <a class="" href="${entry.articleUrl}" style="
                         font-size: 34px;
                         font-weight: 600;
                         color: #000;
@@ -220,7 +220,7 @@ app.scene.home = {
                         <div class="home--doc-entry-cover">
                             <img src="/cover/${entry.index}.png" style="display: block; width: 100%;">
                         </div>
-                        <span class="home--doc-entry-title--text" style="display:block; padding-top: 10px;">${entry.title[app.vars.renderLang]}</span>
+                        <span class="home--doc-entry-title--text ff-serif-alt">${entry.title[app.vars.renderLang]}</span>
                     </a>
                 </div>
                 ${
@@ -233,11 +233,6 @@ app.scene.home = {
                         return '';
                     })()
                 }
-                <style>
-                [data-entry-big-entry-index="${entry.index}"] .home--doc-entry-title {
-
-                }
-                </style>
                 <div class="home--doc-entry-status">
                     <span class="home--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;</span>
                     <span class="home--doc-entry-status-authors">${
@@ -247,7 +242,7 @@ app.scene.home = {
                     }</span>
                 </div>
                 <div class="home--doc-entry--content-container" style="padding: 10px 0 5px;">
-                    <p class="home--doc-entry--content-paragraph ff-serif" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; padding: 0;">
+                    <p class="home--doc-entry--content-paragraph ff-sansserif-alt" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; font-style: italic; padding: 0;">
                         ${(function () {
                             app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
                                 document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>'));
@@ -273,7 +268,7 @@ app.scene.home = {
             <div class="home--doc-entry home--doc-entry-small" style="
             ">
                 <div class="home--doc-entry-title">
-                    <a class="ff-serif" href="${entry.articleUrl}" style="
+                    <a class="ff-serif-alt" href="${entry.articleUrl}" style="
                         font-size: 24px;
                         font-weight: 600;
                         color: #000;
@@ -354,7 +349,7 @@ app.scene.detail = {
                             <img src="/cover/${entry.index}.png" style="display: block; width: 100%;">
                         </div>
                         <div class="detail--doc-entry-title">
-                            <h2 class="ff-serif" style="
+                            <h2 class="ff-serif-alt" style="
                                 font-size: 34px;
                                 color: #000;
                                 text-decoration: none !important;
@@ -381,7 +376,7 @@ app.scene.detail = {
                         <div class="ff-sansserif">
                             <nav class="h2" style="text-align: center; padding: 40px 0 20px;">${({en:'About the Author'+(entry.authors.length === 1 ? '' : 's'),zh:'关于作者'})[app.vars.renderLang]}</nav>
                             ${entry.authors.map(function (authorId) {
-                                return app.scene.authorProfile.renderProfile(authorId) + '<div style="height: 16px;"></div>'
+                                return app.scene.authorProfile.renderProfile(authorId, 'detail') + '<div style="height: 16px;"></div>'
                             }).join('')}
                         </div>
                         <div>
@@ -434,7 +429,13 @@ app.scene.authors = {
         app.didFinishPageLoad();
     },
     render: function () {
-        var html = app.listOfAuthorIdByMostRecentPublishing.map(function (authorId) {
+        var authorsWithZeroArticle = [];
+        app.authors.map(function (authorObj) {
+            if (app.listOfAuthorIdByMostRecentPublishing.indexOf(authorObj.i) === -1) {
+                authorsWithZeroArticle.push(authorObj.i);
+            };
+        });
+        var html = app.listOfAuthorIdByMostRecentPublishing.concat(authorsWithZeroArticle).map(function (authorId) {
             return app.scene.authors.renderAuthorIem(authorId, 'authors');
         }).join('');
         return `<div>
@@ -466,7 +467,7 @@ app.scene.authorProfile = {
             <div style="border: 1px solid #000; padding: 16px 15px; margin: 0 0 0px;">
                 <div style="padding: 0 0 0;">
                     <div class="cp--scene-authorProfile-avatar">
-                        <a href="/?author-${authorObj.i}&lang=${app.vars.renderLang}" style="display: block;">
+                        <a href="/?author-${authorObj.i}&lang=${app.vars.renderLang}" style="display: block; margin: 0 0 10px;">
                             <img src="/img/author-avatars/${authorObj.i}.png">
                         </a>
                     </div>
@@ -482,13 +483,29 @@ app.scene.authorProfile = {
                         <div style="padding: 10px 0 8px">
                             <p>${authorObj.bio[app.vars.renderLang].split('\n').join('</p><p>')}</p>
                             <p style="padding: 8px 0 18px;">
-                                <a class="authorProfile-urlanchor ff-monospace" href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
+                                <a class="authorProfile-urlanchor ff-monospace" style="
+                                    text-decoration: none;
+                                    color: #FFF;
+                                    background: #40454F;
+                                    border-radius: 6px;
+                                    display: inline-block;
+                                    padding: 5px 10px;
+                                " href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
                             </p>
                             <div style="background: #000; height: 1px; margin: 0 0 18px;"></div>
-                            <p>${({en:'Published',zh:'发布了'})[app.vars.renderLang]} ${authorObj.articles.length} ${({en:'articles.',zh:'篇文章。'})[app.vars.renderLang]}</p>
+                            <p>
+                                ${ ({
+                                    en: `Published ${authorObj.articles.length} article${authorObj.articles.length > 1 ? 's' : ''} ${
+                                        authorObj.articles.length === 0 ? '' : 'since '+(new Date(app.articles[authorObj.articles[authorObj.totalArticles-1]].dateSubmit)).toISOString().slice(0,10)
+                                    }`,
+                                    zh: `${
+                                        authorObj.articles.length === 0 ? '' : '自从 '+(new Date(app.articles[authorObj.articles[authorObj.totalArticles-1]].dateSubmit)).toISOString().slice(0,10)
+                                    }发布了 ${authorObj.articles.length} 篇文章`
+                                })[app.vars.renderLang]}
+                            </p>
                             <p>
                                 ${(function () {
-                                    if (authorObj.articles.length > 0) {
+                                    if (authorObj.articles.length > 0 && scene !== 'authorProfile') {
                                         return ({en:'Recent article: ',zh:'最新文章：'})[app.vars.renderLang] + '<a style="color: inherit; display: inline-block;" href="/?article-' + authorObj.mostRecentArticle + '">' + app.articles[authorObj.mostRecentArticle].title[app.vars.renderLang] + '</a>'
                                     } else {
                                         return '<span style="visibility: hidden;">____&nbsp;</span>'
@@ -548,7 +565,7 @@ app.subScene.prevAndNext = {
                 <div class="ff-sansserif" style="font-size: 18px; font-weight: 600; text-align: left; padding: 0 0 8px;">
                     ${(isForNext ? {en:'Next Article',zh:'下一篇文章'} : {en:'Previous Article',zh:'上一篇文章'})[app.vars.renderLang]}
                 </div>
-                <div class="ff-serif" style="font-size: 24px; font-weight: 600;">
+                <div class="ff-serif-alt" style="font-size: 24px; font-weight: 600;">
                     ${app.articles[articleIndex].title[app.vars.renderLang]}
                 </div>
                 <div class="home--doc-entry-status" style="padding: 6px 0 0;">
@@ -594,7 +611,7 @@ app.subScene.relatedArticles = {
         var entry = app.articles[articleIndex];
         return `<div class="uuid-346c9535 uuid-346c9566" data-evenodd="${evenOdd}" style="">
             <a href="${app.articles[articleIndex].articleUrl}" style="color: #000; text-decoration: none; border: 1px solid #000; display: block; padding: 16px 15px;">
-                <div class="ff-serif" style="font-size: 24px; font-weight: 600;">
+                <div class="ff-serif-alt" style="font-size: 24px; font-weight: 600;">
                     ${app.articles[articleIndex].title[app.vars.renderLang]}
                 </div>
                 <div class="home--doc-entry-status" style="padding: 6px 0 0;">
