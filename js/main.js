@@ -10,7 +10,7 @@ var app = {
         entryId: null,
     },
     envVar: {
-        defaultListLength: 10,
+        defaultListLength: 50,
         localStorageNamespace: 'thewesttimes.com:',
         magicUuid_01: '56eb206d-f44c-4f62-a589-74fa5d801ad6',
     }
@@ -203,10 +203,70 @@ app.scene.home = {
         document.querySelector('#cp--scene-home--nav').innerHTML = ({en:'Latest Articles',zh:'最新文章'})[app.vars.renderLang];
         app.didFinishPageLoad();
     },
+    // renderListItemBig_v1: function (entryIndex) {
+    //     var entry = app.articles[entryIndex];
+    //     return `
+    //         <div class="home--doc-entry home--doc-entry-big" data-entry-big-entry-index="${entry.index}" style="
+    //             opacity: 0;
+    //             transition: opacity 150ms ease;
+    //         ">
+    //             <div class="home--doc-entry-title" style="padding-top: 0;">
+    //                 <a class="" href="${entry.articleUrl}" style="
+    //                     font-size: 34px;
+    //                     font-weight: 600;
+    //                     color: #000;
+    //                     display: block;
+    //                 ">
+    //                     <div class="home--doc-entry-cover">
+    //                         <img src="/cover/${entry.index}.jpg" style="display: block; width: 100%;">
+    //                     </div>
+    //                     <span class="home--doc-entry-title--text ff-serif-alt">${entry.title[app.vars.renderLang]}</span>
+    //                 </a>
+    //             </div>
+    //             ${
+    //                 (function () {
+    //                     (new Array(13)).fill(1).map(function (x, i) {
+    //                         setTimeout(function () {
+    //                             document.querySelector('[data-entry-big-entry-index="' + entry.index + '"] .home--doc-entry-title').style.minHeight = (document.querySelector('[data-entry-big-entry-index="' + entry.index + '"] .home--doc-entry-cover').offsetHeight + 10) + 'px';
+    //                         }, Math.pow(2, i));
+    //                     });
+    //                     return '';
+    //                 })()
+    //             }
+    //             <div class="home--doc-entry-status">
+    //                 <span class="home--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;</span>
+    //                 <span class="home--doc-entry-status-authors">${
+    //                     (entry.authors.length < 3) ?
+    //                         ( entry.authors.slice(0,2).map(app.subScene.authorLabel.render).join(', ') ) :
+    //                             ( entry.authors.slice(0,1).concat('etc').map(app.subScene.authorLabel.render).join(', ') )
+    //                 }</span>
+    //             </div>
+    //             <div class="home--doc-entry--content-container" style="padding: 10px 0 5px;">
+    //                 <p class="home--doc-entry--content-paragraph ff-sansserif-alt" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; font-style: italic; padding: 0;">
+    //                     ${(function () {
+    //                         app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
+    //                             document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>'));
+    //                         });
+    //                         return 'Loading...'
+    //                     })()}
+    //                 </p>
+    //             </div>
+    //             ${
+    //                 (function (entry) {
+    //                     if (entry.index === app.articles.length - 1) {
+    //                         document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.jpg');
+    //                     };
+    //                     return '';
+    //                 })(entry)
+    //             }
+    //         </div>
+    //     `;
+    // },
     renderListItemBig: function (entryIndex) {
         var entry = app.articles[entryIndex];
         return `
             <div class="home--doc-entry home--doc-entry-big" data-entry-big-entry-index="${entry.index}" style="
+                padding-top: 8px;
                 opacity: 0;
                 transition: opacity 150ms ease;
             ">
@@ -217,23 +277,10 @@ app.scene.home = {
                         color: #000;
                         display: block;
                     ">
-                        <div class="home--doc-entry-cover">
-                            <img src="/cover/${entry.index}.png" style="display: block; width: 100%;">
-                        </div>
                         <span class="home--doc-entry-title--text ff-serif-alt">${entry.title[app.vars.renderLang]}</span>
                     </a>
                 </div>
-                ${
-                    (function () {
-                        (new Array(13)).fill(1).map(function (x, i) {
-                            setTimeout(function () {
-                                document.querySelector('[data-entry-big-entry-index="' + entry.index + '"] .home--doc-entry-title').style.minHeight = (document.querySelector('[data-entry-big-entry-index="' + entry.index + '"] .home--doc-entry-cover').offsetHeight + 10) + 'px';
-                            }, Math.pow(2, i));
-                        });
-                        return '';
-                    })()
-                }
-                <div class="home--doc-entry-status">
+                <div class="home--doc-entry-status" style="padding: 0 0 10px;">
                     <span class="home--doc-entry-status-date ff-monosapce">${(new Date(entry.dateSubmit)).toISOString().slice(0,10)}&nbsp;</span>
                     <span class="home--doc-entry-status-authors">${
                         (entry.authors.length < 3) ?
@@ -241,8 +288,24 @@ app.scene.home = {
                                 ( entry.authors.slice(0,1).concat('etc').map(app.subScene.authorLabel.render).join(', ') )
                     }</span>
                 </div>
+                <style>
+                .home--doc-entry-cover-img-v2 {
+                    display: block;
+                    width: 100%;
+                    margin: 0 0 10px;
+                }
+                @media screen and (min-width: 768px) {
+                    .home--doc-entry-cover-img-v2 {
+                        display: inline-block;
+                        float: left;
+                        width: 336px; /* text with 385px for 9 lines */
+                        margin: 5px 15px 12px 0;
+                    }
+                }
+                </style>
                 <div class="home--doc-entry--content-container" style="padding: 10px 0 5px;">
-                    <p class="home--doc-entry--content-paragraph ff-sansserif-alt" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; font-style: italic; padding: 0;">
+                    <img class="home--doc-entry-cover-img-v2" src="/cover/${entry.index}.jpg" style="">
+                    <p class="home--doc-entry--content-paragraph ff-serif-alt" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; font-style: normal; padding: 0;">
                         ${(function () {
                             app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
                                 document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>'));
@@ -250,11 +313,13 @@ app.scene.home = {
                             return 'Loading...'
                         })()}
                     </p>
+                    <div style="clear: both;">
+                    </div>
                 </div>
                 ${
                     (function (entry) {
                         if (entry.index === app.articles.length - 1) {
-                            document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
+                            document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.jpg');
                         };
                         return '';
                     })(entry)
@@ -293,7 +358,7 @@ app.scene.home = {
             <div>
                 ${
                     subList.slice(0).reverse().slice(0, lengthLimit).map(function (entry, i) {
-                        if (i < 2) {
+                        if (i < 3) {
                             return app.scene.home.renderListItemBig(entry.index);
                         } else {
                             return app.scene.home.renderListItemSmall(entry.index);
@@ -301,6 +366,16 @@ app.scene.home = {
                     }).join('')
                 }
             </div>
+            ${
+                (subList.length-lengthLimit <= 0) ? '' : `<div>
+                    <div style="text-align: center;">
+                        ${({
+                            en:`${subList.length-lengthLimit} older articles are not listed.`,
+                            zh:`${subList.length-lengthLimit} 篇更早的文章未予列出`
+                        })[app.vars.renderLang]}
+                    </div>
+                </div>`
+            }
         `;
     }
 };
@@ -320,13 +395,25 @@ app.scene.detail = {
             return false;
         }
     },
-    renderContributorsLink: function (articleIndex) {
-        return `<div>
-            <aside style="font-size: 16px; color: #999;padding: 40px 0;">
-                The list of contributors of this article is
-                <a href="https://github.com/neruthes/TheWestTimes-Website/commits/master/db-${app.vars.renderLang}/${articleIndex}.html" style="color: inherit;">available on GitHub</a>.
-            </aside>
-        </div>`;
+    renderContributorsFootnote: function (articleIndex) {
+        return app.articles[articleIndex].contributors.length === 0 ? '' : (function () {
+            return '<div><div style="background: #999; width: 70%; max-width: 400px; height: 1px; margin: 40px 0 0;"></div><aside style="font-size: 16px; color: #999; padding: 20px 0 0;">' + ({
+                en: `${
+                    app.articles[articleIndex].contributors.map(app.subScene.authorLabel.render).join(', ')
+                } also contributed to this article.`,
+                zh: `${
+                    (function () {
+                        var html = app.articles[articleIndex].contributors.map(app.subScene.authorLabel.render).join('、');
+                        var lastContributorId = app.articles[articleIndex].contributors[app.articles[articleIndex].contributors.length-1];
+                        var lastContributorName = app.authors[lastContributorId].name.zh;
+                        if (lastContributorName.split().reverse()[0].match(/[0-9A-Za-z_]/)) {
+                            html += ' ';
+                        };
+                        return html;
+                    })()
+                }对本文章有所贡献。`
+            })[app.vars.renderLang] + '</aside></div>';
+        })()
     },
     render: function (articleIndex, httpStatus) {
         var entry = app.articles[articleIndex];
@@ -346,7 +433,7 @@ app.scene.detail = {
                         padding: 0 16px 0;
                     ">
                         <div class="detail--doc-entry-cover">
-                            <img src="/cover/${entry.index}.png" style="display: block; width: 100%;">
+                            <img src="/cover/${entry.index}.jpg" style="display: block; width: 100%;">
                         </div>
                         <div class="detail--doc-entry-title">
                             <h2 class="ff-serif-alt" style="
@@ -364,14 +451,14 @@ app.scene.detail = {
                         <div class="detail--doc-entry--content-container ff-serif" id="js--detail--doc-entry--content-container-${entry.index}" style="padding: 10px 0 0;">
                             ${(function () {
                                 app.xhrget(`/db-en/` + entry.index + '.html', function (e) {
-                                    document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.toString();
-                                    document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.png');
+                                    document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.trim();
+                                    document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.jpg');
                                 });
                                 return 'Loading...'
                             })()}
                         </div>
                         <div>
-                            ${app.scene.detail.renderContributorsLink(articleIndex)}
+                            ${app.scene.detail.renderContributorsFootnote(articleIndex)}
                         </div>
                         <div class="ff-sansserif">
                             <nav class="h2" style="text-align: center; padding: 40px 0 20px;">${({en:'About the Author'+(entry.authors.length === 1 ? '' : 's'),zh:'关于作者'})[app.vars.renderLang]}</nav>
@@ -480,6 +567,10 @@ app.scene.authorProfile = {
                             <p>${authorObj.bio[app.vars.renderLang].split('\n').join('</p><p>')}</p>
                             <p style="padding: 8px 0 18px;">
                                 <a class="authorProfile-urlanchor ff-monospace" style="
+                                    font-family: 'Source Code Pro', 'Inconsolata', 'Menlo', monospace;
+                                    font-size: 14px;
+                                    font-weight: 400;
+                                    line-height: 18px;
                                     text-decoration: none;
                                     color: #FFF;
                                     background: #40454F;
@@ -671,9 +762,23 @@ app.subScene.authorInfoCard = {
                     <div style="font-size: 16px; color: #111; line-height: 19px; margin: 0 0 5px;">
                         ${authorObj.bio[app.vars.renderLang].replace(/\n/g, ({en:' ',zh:''})[app.vars.renderLang])}
                     </div>
-                    <div style="font-size: 16px; color: #05C; line-height: 19px;">
+                    <!--div style="font-size: 16px; color: #05C; line-height: 19px;">
                         <a href="${authorObj.url}">${authorObj.url.replace(/^https?\:\/\//, '')}</a>
-                    </div>
+                    </div-->
+                    <p style="padding: 8px 0 3px;">
+                        <a class="authorProfile-urlanchor ff-monospace" style="
+                            font-family: 'Source Code Pro', 'Inconsolata', 'Menlo', monospace;
+                            font-size: 14px;
+                            font-weight: 400;
+                            line-height: 18px;
+                            text-decoration: none;
+                            color: #FFF;
+                            background: #40454F;
+                            border-radius: 6px;
+                            display: inline-block;
+                            padding: 5px 10px;
+                        " href="${authorObj.url}">${authorObj.url.replace(/^https?:\/\//, '')}</a>
+                    </p>
                 </div>
                 <div style="clear: both;">
                 </div>

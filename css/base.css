@@ -32,6 +32,10 @@ html, body {
     font-family: 'PT Serif', 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
 }
 
+.ff-serif-alt-2 {
+    font-family: 'PT Serif Caption', 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif;
+}
+
 .ff-monosapce, pre, code {
     font-family: 'Source Code Pro', 'Menlo', 'PT Mono', monospace;
 }
