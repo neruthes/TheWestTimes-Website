@@ -299,6 +299,7 @@ app.scene.home = {
                         display: inline-block;
                         float: left;
                         width: 336px; /* text with 385px for 9 lines */
+                        min-height: 200px;
                         margin: 5px 15px 12px 0;
                     }
                 }
