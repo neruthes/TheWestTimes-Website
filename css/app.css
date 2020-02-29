@@ -68,7 +68,7 @@ header p {
 }
 
 .cp--nav-inner {
-    padding: 0 16px;
+    padding: 0 16px 0 8px;
 }
 
 .cp--nav-container a {
@@ -78,10 +78,23 @@ header p {
     /* color: #0571EF; */
     color: #000;
     text-decoration: none;
-    margin-right: 16px;
+    display: inline-block;
+    padding: 5px 8px;
+    margin-right: 12px;
+    border-radius: 1px;
+}
+.cp--nav-container a[data-grandnav-current="true"] {
+    /* color: #FFF; */
+    /* background: #40454F; */
+    /* box-shadow: #40454F 0 0 0 5px; */
+    background: #D5D5D5;
+    box-shadow: #D5D5D5 0 0 0 1px;
 }
 .cp--nav-container a:hover {
-    opacity: 0.5;
+    color: #FFF;
+    background: #40454F;
+    box-shadow: #40454F 0 0 0 1px;
+    /* opacity: 0.5; */
 }
 
 /*  ----------------------------------------------------
@@ -265,34 +278,34 @@ p {
 
 /* Author Profile */
 
-.cp--scene-authorProfile-avatar {
+.cp--scene-authors_profile-avatar {
     padding: 0;
 }
-.cp--scene-authorProfile-avatar img {
+.cp--scene-authors_profile-avatar img {
     display: block;
     width: 120px;
     border-radius: 10000px;
 }
 @media screen and (min-width: 768px) {
-    .cp--scene-authorProfile-avatar {
+    .cp--scene-authors_profile-avatar {
         float: left;
     }
-    .cp--scene-authorProfile-info {
+    .cp--scene-authors_profile-info {
         margin-left: 136px;
     }
 }
-.cp--scene-authorProfile-info h2 a {
+.cp--scene-authors_profile-info h2 a {
     color: inherit;
 }
-.cp--scene-authorProfile-info h2 a:hover {
+.cp--scene-authors_profile-info h2 a:hover {
     color: #038;
 }
-.cp--scene-authorProfile-info p {
+.cp--scene-authors_profile-info p {
     font-size: 16px;
     line-height: 20px;
     padding: 0 0 4px;
 }
-.cp--scene-authorProfile-info p a.authorProfile-urlanchor {
+.cp--scene-authors_profile-info p a.authors_profile-urlanchor {
     font-family: 'Source Code Pro', 'Inconsolata', 'Menlo', monospace;
     color: #000;
     letter-spacing: 0px;
@@ -416,6 +429,6 @@ p {
 
 body[data-scene="home"] #cp--scene-home { display: block !important; }
 body[data-scene="about"] #cp--scene-about { display: block !important; }
-body[data-scene="detail"] #cp--scene-detail { display: block !important; }
+body[data-scene="home_detail"] #cp--scene-home_detail { display: block !important; }
 body[data-scene="authors"] #cp--scene-authors { display: block !important; }
-body[data-scene="authorProfile"] #cp--scene-authorProfile { display: block !important; }
+body[data-scene="authors_profile"] #cp--scene-authors_profile { display: block !important; }
