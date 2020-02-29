@@ -683,7 +683,7 @@ app.subScene.relatedArticles = {
         var considerCandidate = function (candidateIndex) {
             if (candidateIndex === undefined) { return 1; }
             if (candidateArticles.indexOf(candidateIndex) !== -1) { return 1; };
-            // if (articleIndex === candidateIndex) { return 1; };
+            if (articleIndex === candidateIndex) { return 1; };
             // if (articleIndex + 1 === candidateIndex) { return 1; };
             // if (articleIndex - 1 === candidateIndex) { return 1; };
             candidateArticles.push(candidateIndex);
