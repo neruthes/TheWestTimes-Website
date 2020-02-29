@@ -247,13 +247,13 @@ header p {
 }
 
 .detail--doc-entry--content-container h3 {
-    font-family: 'SF Pro Display', 'SF Pro Text', 'SF UI Display', 'SF UI Text', -apple-system, 'Source Sans Pro', 'Seravek', 'Helvetica Neue', 'Helvetica', 'Open Sans', 'Ubuntu', Arial, sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Microsoft YaHei';
+    font-family: 'SF Pro Display', 'SF Pro Text', 'SF UI Display', 'SF UI Text', -apple-system, 'Source Sans Pro', 'Seravek', 'Helvetica Neue', 'Helvetica', 'Open Sans', 'Ubuntu', Arial, sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
     font-size: 30px;
     font-weight: 600;
 }
 
 .detail--doc-entry--content-container p {
-    font-family: 'Charter', 'Georgia', 'Times New Roman', serif, 'Source Serif SC', 'Source Han Serif CN', 'Noto Serif CJK SC', 'Songti SC';
+    font-family: 'Charter', 'Georgia', 'Times New Roman', 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
     font-size: 20px;
 }
 

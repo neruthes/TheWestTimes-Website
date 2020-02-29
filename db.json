@@ -42,8 +42,18 @@
             "authors": [0],
             "contributors": [1],
             "title": {
-                "en": "WSJ Is the Real Sick Press of Americas [Draft]",
-                "zh": "华尔街日报是真正的北美病媒 [草稿]"
+                "en": "WSJ Is the Real Sick Press of Americas",
+                "zh": "华尔街日报是真正的北美病媒"
+            }
+        },
+        {
+            "index": 2,
+            "dateSubmit": 1582975462146,
+            "authors": [0],
+            "contributors": [],
+            "title": {
+                "en": "USA Does Not Need Immigration Reforms Like China",
+                "zh": "美国移民制度无需效仿中国改革"
             }
         }
     ]
