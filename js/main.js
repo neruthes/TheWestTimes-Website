@@ -90,32 +90,32 @@ app.load = function () {
         };
         app.scene.authors_profile.load(parseInt(authorId_str));
     } else if (location.search.indexOf('?article-') === 0) {
-        // Scene: home_detail
+        // Scene: article_detail
         if (location.search.match(/^\?article-([0-9]+)/)) {
             // With index
             var match = location.search.match(/^\?article-([0-9]+)/);
             var match_1 = parseInt(match[1]);
-            app.setScene('home_detail');
-            if (app.scene.home_detail.determineIndexValidity(match[1])) {
+            app.setScene('article_detail');
+            if (app.scene.article_detail.determineIndexValidity(match[1])) {
                 // Valid index
-                if (app.scene.home_detail.determineExistence(match_1)) {
+                if (app.scene.article_detail.determineExistence(match_1)) {
                     // Good index
                     if (app.articles[match_1].articleUrl !== '/' + location.search) {
                         location.href = app.articles[match_1].articleUrl;
                     };
                     app.vars.entryId = match_1;
                     app.setTitleComponent(app.articles[match_1].title[app.vars.renderLang]);
-                    document.querySelector('#cp--scene-home_detail--inner').innerHTML = app.scene.home_detail.render(match_1, 'normal');
+                    document.querySelector('#cp--scene-article_detail--inner').innerHTML = app.scene.article_detail.render(match_1, 'normal');
                     app.didFinishPageLoad();
                 } else {
                     // Does not exist
                     app.setTitleComponent('404 Not Found');
-                    document.querySelector('#cp--scene-home_detail--inner').innerHTML = app.scene.home_detail.render(match_1, 'error404');
+                    document.querySelector('#cp--scene-article_detail--inner').innerHTML = app.scene.article_detail.render(match_1, 'error404');
                 };
             } else {
                 // Invalid index
                 app.setTitleComponent('404 Not Found');
-                document.querySelector('#cp--scene-home_detail--inner').innerHTML = app.scene.home_detail.render(match_1, 'error404');
+                document.querySelector('#cp--scene-article_detail--inner').innerHTML = app.scene.article_detail.render(match_1, 'error404');
             };
         } else {
             // Without index
@@ -388,7 +388,7 @@ app.scene.home = {
     }
 };
 
-app.scene.home_detail = {
+app.scene.article_detail = {
     determineIndexValidity: function (indexStr) {
         if (parseInt(indexStr).toString() === indexStr) {
             return true;
@@ -466,12 +466,12 @@ app.scene.home_detail = {
                             })()}
                         </div>
                         <div>
-                            ${app.scene.home_detail.renderContributorsFootnote(articleIndex)}
+                            ${app.scene.article_detail.renderContributorsFootnote(articleIndex)}
                         </div>
                         <div class="ff-sansserif">
                             <nav class="h2" style="text-align: center; padding: 40px 0 20px;">${({en:'About the Author'+(entry.authors.length === 1 ? '' : 's'),zh:'关于作者'})[app.vars.renderLang]}</nav>
                             ${entry.authors.map(function (authorId) {
-                                return app.scene.authors_profile.renderProfile(authorId, 'home_detail') + '<div style="height: 16px;"></div>'
+                                return app.scene.authors_profile.renderProfile(authorId, 'article_detail') + '<div style="height: 16px;"></div>'
                             }).join('')}
                         </div>
                         <div>
@@ -819,7 +819,7 @@ app.didFinishPageLoad = function () {
     // Render SubScene: switchLang
     (function () {
         var scene = document.body.getAttribute('data-scene');
-        if (scene === 'home_detail') {
+        if (scene === 'article_detail') {
             app.subScene.switchLang.render('' + app.articles[app.vars.entryId].articleUrl.replace(/=\w{2}$/, '={lang}'));
         } else if (scene === 'about') {
             app.subScene.switchLang.render('/?about&lang={lang}');
