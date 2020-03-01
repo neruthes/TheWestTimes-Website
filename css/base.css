@@ -17,19 +17,19 @@ html, body {
 }
 
 .ff-sansserif {
-    font-family: -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
+    font-family: -apple-system, 'SF Pro Text', 'SF Pro UI', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', 'Arial', sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
 }
 
 .ff-sansserif-alt {
-    font-family: 'Source Sans Pro', -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', Arial, sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
+    font-family: 'Source Sans Pro', -apple-system, 'Seravek', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', 'Arial', sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
 }
 
 .ff-serif {
-    font-family: 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
+    font-family: 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', 'Times New Roman', serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
 }
 
 .ff-serif-alt {
-    font-family: 'PT Serif', 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
+    font-family: 'PT Serif', 'Georgia', 'Charter', 'Iowan Old Style', 'Source Serif Pro', 'PT Serif', 'Times New Roman', serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
 }
 
 .ff-serif-alt-2 {

@@ -869,6 +869,7 @@ app.start = function () {
         };
         // Finally
         app.vars.renderLang = tmpLang;
+        document.body.setAttribute('data-render-lang', app.vars.renderLang);
         // Save to cache
         localStorage[app.envVar.localStorageNamespace+'cached-lang'] = app.vars.renderLang;
     })();

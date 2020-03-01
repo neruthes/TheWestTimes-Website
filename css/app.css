@@ -432,3 +432,12 @@ body[data-scene="about"] #cp--scene-about { display: block !important; }
 body[data-scene="article_detail"] #cp--scene-article_detail { display: block !important; }
 body[data-scene="authors"] #cp--scene-authors { display: block !important; }
 body[data-scene="authors_profile"] #cp--scene-authors_profile { display: block !important; }
+
+/*  ----------------------------------------------------
+    Misc
+----------------------------------------------------- */
+
+body[data-render-lang="zh"],
+body[data-render-lang="zh"] * {
+    font-family: -apple-system, 'SF Pro Text', 'SF Pro UI', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', 'Arial', sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei' !important;
+}
