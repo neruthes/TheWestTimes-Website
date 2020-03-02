@@ -316,7 +316,7 @@ app.scene.home = {
                     <p class="home--doc-entry--content-paragraph ff-serif-alt" id="js--home--doc-entry--content-container-${entry.index}" style="font-size: 16px; font-style: normal; padding: 0;">
                         ${(function () {
                             app.xhrget(`/db-${app.vars.renderLang}/` + entry.index + '.html', function (e) {
-                                document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).slice(e.target.responseText.indexOf('<p>')+3, e.target.responseText.indexOf('</p>'));
+                                document.querySelector('#js--home--doc-entry--content-container-' + entry.index).innerHTML = (e.target.responseText).split('<p>')[1].split('</p>')[0].replace(/<a.+?>(.+?)<\/a>/g, '$1').trim();
                             });
                             return 'Loading...';
                         })()}
@@ -459,7 +459,7 @@ app.scene.article_detail = {
                         <div class="detail--doc-entry--content-container ff-serif" id="js--detail--doc-entry--content-container-${entry.index}" style="padding: 10px 0 0;">
                             ${(function () {
                                 app.xhrget(`/db-${app.vars.renderLang}/` + entry.index + '.html', function (e) {
-                                    document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.trim();
+                                    document.querySelector('#js--detail--doc-entry--content-container-' + entry.index).innerHTML = e.target.responseText.trim().replace();
                                     document.querySelector('#og-image').setAttribute('content', '/cover/' + entry.index + '.jpg');
                                 });
                                 return 'Loading...'
