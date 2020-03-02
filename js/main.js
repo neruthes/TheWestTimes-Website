@@ -595,7 +595,7 @@ app.scene.authors_profile = {
                                     }`,
                                     zh: `${
                                         authorObj.articles.length === 0 ? '' : '自从 '+(new Date(app.articles[authorObj.articles[authorObj.totalArticles-1]].dateSubmit)).toISOString().slice(0,10)
-                                    }发布了 ${authorObj.articles.length} 篇文章`
+                                    } 发布了 ${authorObj.articles.length} 篇文章`
                                 })[app.vars.renderLang]}
                             </p>
                             <p>

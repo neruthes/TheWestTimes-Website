@@ -173,7 +173,7 @@ header p {
 }
 .home--doc-entry .home--doc-entry-title--text {
     font-weight: 600;
-    line-height: 1.25em;
+    line-height: 1.2em;
     display: block;
     padding: 5px 0 0;
 }
@@ -270,7 +270,7 @@ header p {
 }
 
 p {
-    line-height: 1.4em;
+    line-height: 1.45em;
     padding: 0 0 0.7em;
 }
 
@@ -437,7 +437,6 @@ body[data-scene="authors_profile"] #cp--scene-authors_profile { display: block !
     Misc
 ----------------------------------------------------- */
 
-body[data-render-lang="zh"],
-body[data-render-lang="zh"] * {
-    font-family: -apple-system, 'SF Pro Text', 'SF Pro UI', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', 'Arial', sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei' !important;
+body[data-render-lang="zh"] .detail--doc-entry--content-container p {
+    font-family: -apple-system, 'SF Pro Text', 'SF Pro UI', 'Helvetica Neue', 'Helvetica', 'Source Sans Pro', 'Open Sans', 'Ubuntu', 'Arial', sans-serif, 'PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
 }
