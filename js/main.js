@@ -139,7 +139,7 @@ app.databaseBackbone = {
         var dbJson = JSON.parse(rawData);
         app.articles = dbJson.articles.map(function (entry, index) {
             var tmpObj = entry;
-            tmpObj.articleUrl = `/?article-${entry.index}--` + entry.title.en.replace(/[^\w\d]/g, '-').replace(/\-+/g, '-').replace(/[^\d\w-]/g, '').toLowerCase() + `&lang=${app.vars.renderLang}`;
+            tmpObj.articleUrl = `/?article-${entry.index}--` + entry.title.en.replace(/[^\w\d]/g, ' ').replace(/\s+/g, ' ').trim().replace(/\s/g, '-').toLowerCase() + `&lang=${app.vars.renderLang}`;
             return tmpObj;
         });
         // Authors
