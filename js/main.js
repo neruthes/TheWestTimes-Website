@@ -681,11 +681,11 @@ app.subScene.relatedArticles = {
         // return ''; // When less than 6 articles
         var candidateArticles = [];
         var considerCandidate = function (candidateIndex) {
-            if (candidateIndex === undefined) { return 1; }
-            if (candidateArticles.indexOf(candidateIndex) !== -1) { return 1; };
-            if (articleIndex === candidateIndex) { return 1; };
-            // if (articleIndex + 1 === candidateIndex) { return 1; };
-            // if (articleIndex - 1 === candidateIndex) { return 1; };
+            if (candidateIndex === undefined) { return 1; } // Error handling
+            if (candidateArticles.indexOf(candidateIndex) !== -1) { return 1; }; // Cannot exist already
+            if (articleIndex === candidateIndex) { return 1; }; // Cannot be the same article
+            if (articleIndex + 1 === candidateIndex) { return 1; }; // Cannot be next article
+            if (articleIndex - 1 === candidateIndex) { return 1; }; // Cannot be previous article
             candidateArticles.push(candidateIndex);
         };
         app.articles[articleIndex].authors.map(function (authorId) {
