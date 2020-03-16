@@ -468,21 +468,21 @@ app.scene.article_detail = {
                         <div>
                             ${app.scene.article_detail.renderContributorsFootnote(articleIndex)}
                         </div>
-                        <div class="ff-sansserif">
+                        <div class="ff-sansserif hide-print">
                             <nav class="h2" style="text-align: center; padding: 40px 0 20px;">${({en:'About the Author'+(entry.authors.length === 1 ? '' : 's'),zh:'关于作者'})[app.vars.renderLang]}</nav>
                             ${entry.authors.map(function (authorId) {
                                 return app.scene.authors_profile.renderProfile(authorId, 'article_detail') + '<div style="height: 16px;"></div>'
                             }).join('')}
                         </div>
-                        <div>
+                        <div class="hide-print">
                             ${app.subScene.prevAndNext.render(articleIndex)}
                         </div>
-                        <div>
+                        <div class="hide-print">
                             <nav class="h2" style="text-align: center; padding: 40px 0 20px;">${({en:'Related Articles',zh:'相关文章'})[app.vars.renderLang]}</nav>
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="hide-print">
                     <!-- Fluid width -->
                     <div style="font-size: 0px; padding: 0 32px 0;">
                         ${app.subScene.relatedArticles.render(articleIndex)}
